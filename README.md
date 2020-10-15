@@ -12,6 +12,6 @@ Usage for all Aspects is the same. Enter the directory and execute the correspon
 
 Example:
 
-'''bash
+```bash
 python TOV-SingleSolve.py
-'''
+```
