@@ -53,8 +53,8 @@ class DiffEqSolver:
 		u = u0
 
 		# Initialise the result arrays (for total and inside)
-		results = np.array([[r0, u0, p0]])
-		results_small = np.array([[r0, u0, p0]])
+		results = np.array([[r0, u0, p0, self.eos(p0,r0)]])
+		results_small = np.array([[r0, u0, p0, self.eos(p0,r0)]])
 
 		# Actually integrate the equations
 		while r <= rend:
@@ -65,8 +65,8 @@ class DiffEqSolver:
 					# Increase the radial coordinate
 					r = r + dr
 					# Append the calculated values to the results array
-					results = np.concatenate((results, np.array([[r, u, p]])))
-					results_small = np.concatenate((results_small, np.array([[r, u, p]])))
+					results = np.concatenate((results, np.array([[r, u, p, self.eos(p,r)]])))
+					results_small = np.concatenate((results_small, np.array([[r, u, p, self.eos(p,r)]])))
 				except:
 					break
 				if p <= 0:
@@ -74,7 +74,7 @@ class DiffEqSolver:
 			else:
 				u, p = [u, 0]
 				r = r + dr
-				results = np.concatenate((results, np.array([[r, u, p]])))
+				results = np.concatenate((results, np.array([[r, u, p, self.eos(p,r)]])))
 		# Return the results and a True value for success of the method
 		if r == 0:
 			return results, results_small, False, r
