@@ -6,10 +6,10 @@ Created on Thu Oct 15 14:28:59 2020
 @author: jonas
 """
 
-from Solvers.SolverOverR import DiffEqSolver
+from Solvers.SolverOverR import DiffEqSolverOverR
 import matplotlib.pyplot as plt
 
-class Plotter(DiffEqSolver):
+class Plotter(DiffEqSolverOverR):
 	def solveAndPlotResults(self, r0, u0, p0, R, rend, dr):
 		# First we need to solve the equations
 		results, results_small, succ, r_max = self.solveTOV(r0, u0, p0, R, rend, dr)
@@ -30,7 +30,7 @@ class Plotter(DiffEqSolver):
 # Define initial values
 r0 = 0
 u0 = 0
-q0 = 0
+q0 = 1
 R  = 100
 rend = R
 dr = 0.01
