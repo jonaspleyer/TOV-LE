@@ -20,7 +20,7 @@ Solvers - Contains differnt ways to solving the LE and TOV equations
 - Solver  		
 	-:arrow_right:	Standard Solver. Solves TOV and LE as written down
 - SolverOverR  		
-	-:arrow_right:	Supposed to solve with (p*r) instead of p. Currently not working
+  -:arrow_right:	Supposed to solve with (p*r) instead of p. Currently not working
 
 ## Usage
 
