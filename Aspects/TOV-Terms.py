@@ -96,7 +96,7 @@ class Plotter(DiffEqSolver):
 		# General configuration of the total plot
 		plt.tight_layout()
 		plt.subplots_adjust(hspace=0.3)
-		plt.savefig('pictures/SeperateTerms.svg')
+		plt.savefig('pictures/TOV-Terms.svg')
 		plt.show()
 
 # Define initial values

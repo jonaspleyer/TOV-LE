@@ -85,8 +85,10 @@ class DiffEqSolver:
 			return results, results_small, True, r
 
 	# Solves the Lane-Emden euation	
-	def solveLE(self, xi0, T0, dT0, xi_max, dxi):
-		dy = self.RK4(lambda x, y1, y2:[y2, 0 if x <= 0 else -2 / x * y2 - np.exp(1/(self.gamma-1) * np.log(y1)) if y1 > 0 else 0])
+	def solveLE(self, xi0, T0, dT0, xi_max, dxi, exponent=None, suppressWarning=False):
+		if exponent == None:
+			exponent = 1/(self.gamma-1)
+		dy = self.RK4(lambda x, y1, y2:[y2, 0 if x <= 0 else -2 / x * y2 - y1**exponent if y1 > 0 else 0])
 		
 		# Define initial values
 		x = xi0
@@ -111,7 +113,8 @@ class DiffEqSolver:
 		if x == 0:
 			return results, False, x
 		elif x <= xi_max:
-			print("Warning: Solving only possible up to xi = " + str(round(results[-1][0],2)) +"/" + str(round(xi_max,2)) + " with T = " + str(results[-1][1]) + " and dT = " + str(results[-1][2]))
+			if suppressWarning == False:
+				print("Warning: Solving only possible up to xi = " + str(round(results[-1][0],2)) +"/" + str(round(xi_max,2)) + " with T = " + str(results[-1][1]) + " and dT = " + str(results[-1][2]))
 			return results, True, x
 		elif x > xi_max:
 			return results, True, x
@@ -150,7 +153,7 @@ class DiffEqSolver:
 		if succ == False:
 			return [], False
 		
-		print('alpha = ' + str(round(alpha,2)))
+		print('alpha     = ' + str(round(alpha,2)))
 		print('xi_end[r] = ' + str(round(xi_max*alpha,2)))
 		
 		# Transform the LE result into the TOV Parameters to compare them
