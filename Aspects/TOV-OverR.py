@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Oct 15 14:28:59 2020
-
-@author: jonas
-"""
+# Only use this to import the package DiffEqSolver 
+# from ../Solvers/ correctly
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
 
 from Solvers.SolverOverR import DiffEqSolverOverR
 import matplotlib.pyplot as plt

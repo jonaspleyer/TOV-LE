@@ -1,4 +1,11 @@
 import numpy as np
+# Only use this to import the package DiffEqSolver 
+# from ../Solvers/ correctly
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
+
 from Solvers.Solver import DiffEqSolver
 import multiprocessing
 import time

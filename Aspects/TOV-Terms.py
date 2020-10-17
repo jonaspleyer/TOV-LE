@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 14 14:17:41 2020
-
-@author: jonas
-"""
+# Only use this to import the package DiffEqSolver 
+# from ../Solvers/ correctly
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
 
 from Solvers.Solver import DiffEqSolver
 import numpy as np
