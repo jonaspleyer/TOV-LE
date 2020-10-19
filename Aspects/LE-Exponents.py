@@ -125,4 +125,5 @@ n_step = 0.01
 # 8       2.43s
 # 16      2.36
 # Every integer value >=1 is possible
+print("Start Solving")
 Solver.solveMultiprocExponents(n_0, n_max, n_step, suppressOutput=True, N_threads=4)
