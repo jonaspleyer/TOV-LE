@@ -157,7 +157,7 @@ class DiffEqSolver:
 		dxi = dr/alpha
 		
 		# Solve the LE equation
-		results_LE, succ, xi_max = self.solveLE(0,1,0,xi_end, dxi, suppressWarning)
+		results_LE, succ, xi_max = self.solveLE(0,1,0,xi_end, dxi, exponent=exponent, suppressWarning=suppressWarning)
 		r_max = xi_max*alpha
 		
 		# If this has no success, we do not need to further evaluate
