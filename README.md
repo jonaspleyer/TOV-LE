@@ -9,7 +9,7 @@
 * :arrow_right: TOV-LE-Combi
   * Plots TOV and LE results
 * :arrow_right: TOV-SingleSolve-Logp
-  * Plots TOV results for 1/r solving method (currently not working)
+  * Plots TOV results for q=log(p) solving method
 * :arrow_right: TOV-SingleSolve
   * Plots TOV results
 * :arrow_right: TOV-Terms
