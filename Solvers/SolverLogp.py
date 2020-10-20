@@ -18,13 +18,15 @@ warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
 # but overwrite the solving method for the TOV equation
 class DiffEqSolverLogp(DiffEqSolver):
 	# Solves the Tov equation (also for different additional terms present in equation)
-	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None):
+	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None, suppressWarning=False):
 		# Set the exponent n = 1/(gamma-1) if chose different to init
-		if not exponent == None:
-			self.gamma = 1+1/exponent
+		if exponent == None:
+			gamma = self.gamma
+		else:
+			gamma = 1+1/exponent
 		
 		# We have to adjust the EOS to accomodate for the change of variables.
-		self.eos_new = lambda q,r: self.factor*np.exp(q*1/self.gamma)
+		self.eos_new = lambda q,r: self.factor*np.exp(q*1/gamma)
 		
 		# Define the function that returns the increment
 		# The parameter "terms" defines how many additional terms are present when comparing
@@ -77,7 +79,8 @@ class DiffEqSolverLogp(DiffEqSolver):
 		if r == 0:
 			return results, results_small, False, r
 		elif r < R:
-			print("Warning: Solving only possible up to r = " + str(results[-1][0]) + " with m = " + str(results[-1][1]) + " and p = " + str(results[-1][2]))
+			if suppressWarning==False:
+				print("Warning: Solving only possible up to r = " + str(results[-1][0]) + " with m = " + str(results[-1][1]) + " and p = " + str(results[-1][2]))
 			return results, results_small, True, r
 		elif r > R:
 			return results, results_small, True, r
