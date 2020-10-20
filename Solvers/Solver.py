@@ -34,7 +34,7 @@ class DiffEqSolver:
 		)(dr * f(r		  , u			 , p)[0]			 , dr * f(r		  , u			 , p)[1])
 
 	# Solves the Tov equation (also for different additional terms present in equation)
-	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None):
+	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None, suppressWarning=False):
 		# Set the exponent n = 1/(gamma-1) if chose different to init
 		if not exponent == None:
 			self.gamma = 1+1/exponent
@@ -86,7 +86,8 @@ class DiffEqSolver:
 		if r == 0:
 			return results, results_small, False, r
 		elif r < R:
-			print("Warning: Solving only possible up to r = " + str(results[-1][0]) + " with m = " + str(results[-1][1]) + " and p = " + str(results[-1][2]))
+			if suppressWarning==False:
+				print("Warning: Solving only possible up to r = " + str(results[-1][0]) + " with m = " + str(results[-1][1]) + " and p = " + str(results[-1][2]))
 			return results, results_small, True, r
 		elif r > R:
 			return results, results_small, True, r
@@ -143,7 +144,7 @@ class DiffEqSolver:
 			return [], False, False
 	
 	# Converts results from LE equation to compare with TOV results
-	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None):
+	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None, suppressWarning=False, suppressOutput=False):
 		# Gather all important variables
 		g = self.gamma
 		if exponent == None:
@@ -156,15 +157,15 @@ class DiffEqSolver:
 		dxi = dr/alpha
 		
 		# Solve the LE equation
-		results_LE, succ, xi_max = self.solveLE(0,1,0,xi_end, dxi)
+		results_LE, succ, xi_max = self.solveLE(0,1,0,xi_end, dxi, suppressWarning)
 		r_max = xi_max*alpha
 		
 		# If this has no success, we do not need to further evaluate
 		if succ == False:
 			return [], False
-		
-		print('alpha     = ' + str(round(alpha,2)))
-		print('xi_end[r] = ' + str(round(xi_max*alpha,2)))
+		if suppressOutput == False:
+			print('alpha     = ' + str(round(alpha,2)))
+			print('xi_end[r] = ' + str(round(xi_max*alpha,2)))
 		
 		# Transform the LE result into the TOV Parameters to compare them
 		# this computes the pressure from the LaneEmden function Theta
