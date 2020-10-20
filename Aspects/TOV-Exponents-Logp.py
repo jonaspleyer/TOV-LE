@@ -10,6 +10,9 @@ sys.path.append(parentdir)
 
 from Solvers.SolverLogp import DiffEqSolverLogp
 import matplotlib.pyplot as plt
+import time
+import numpy as np
+import multiprocessing
 
 class Plotter(DiffEqSolverLogp):
 	def solveMultiprocExponents(self, n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads = 13):
@@ -17,7 +20,9 @@ class Plotter(DiffEqSolverLogp):
 		self.exponent_vals = np.arange(n_0,n_max+n_step,n_step)
 		
 		# max_r_results = multiprocessing.Array('l',[[0,False,0,0] for i in range(0,len(self.exponent_vals))])
+		self.r_maxes = multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))])
 		self.xi_maxes = multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))])
+		self.r_Bool = multiprocessing.Array('l',[0 for i in range(0,len(self.exponent_vals))])
 		self.xi_Bool = multiprocessing.Array('l',[0 for i in range(0,len(self.exponent_vals))])
 		self.times = multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))])
 		
@@ -36,7 +41,7 @@ class Plotter(DiffEqSolverLogp):
 				array.append(N_threads*j + i)
 				j += 1
 			# Generate the process
-			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(array, xi0, T0, dT0, xi_end, dxi,))
+			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(array, r0, u0, p0, R, rend, dr,))
 			# Store it in the x array
 			processes.append(x)
 			x.start()
@@ -48,20 +53,20 @@ class Plotter(DiffEqSolverLogp):
 		# Create lists to store values for plotting
 		# We differentiatie between values for which the solution 
 		# was successfull and ones where it was not
-		plot_zero_values = []
-		plot_zero_values_Not = []
-		plot_exponent_values = []
-		plot_exponent_values_Not = []
+		r_plot_zero_values = []
+		xi_plot_zero_values = []
+		r_plot_exponent_values = []
+		xi_plot_exponent_values = []
 		
 		for i in range(0,len(self.exponent_vals)):
 			if suppressOutput == False:
-				print(str(self.xi_maxes[i]) + "  " + str(self.xi_Bool[i]) + "  " + str(self.exponent_vals[i]) + "  " + str(self.times[i]))
+				print(str(self.exponent_vals[i]) + "  " + str(self.r_maxes[i]) + "  " + str(self.r_Bool[i]) + "  " + str(self.xi_maxes[i]) + " " + str(self.xi_Bool[i]))
+			if self.r_Bool[i] == 1:
+				r_plot_zero_values.append(self.r_maxes[i])
+				r_plot_exponent_values.append(self.exponent_vals[i])
 			if self.xi_Bool[i] == 1:
-				plot_zero_values.append(self.xi_maxes[i])
-				plot_exponent_values.append(self.exponent_vals[i])
-			else:
-				plot_zero_values_Not.append(self.xi_maxes[i])
-				plot_exponent_values_Not.append(self.exponent_vals[i])
+				xi_plot_zero_values.append(self.xi_maxes[i])
+				xi_plot_exponent_values.append(self.exponent_vals[i])
 		
 		# Stop the timer
 		end = time.time()
@@ -73,24 +78,28 @@ class Plotter(DiffEqSolverLogp):
 		# Plot the results
 		# Create figure with right dimensions
 		plt.figure(figsize=[6.4,4])
-		plt.plot(plot_exponent_values, plot_zero_values, label=r'$\xi_0$', linestyle="-", c='black')
+		plt.plot(r_plot_exponent_values, r_plot_zero_values, label=r'$r_0$', linestyle="-", c='black')
+		plt.plot(xi_plot_exponent_values, xi_plot_zero_values, label=r'$\xi_0[r]$', linestyle="-.", c='black')
 		plt.legend()
-		plt.title(r'$\xi_0$ where $\theta(\xi_0)=0$')
-		plt.xlabel(r"Exponent $n$")
+		plt.title(r'$r_0$ where $p(r_0)=0$')
+		plt.xlabel(r"Exponent $n=\frac{1}{\gamma-1}$")
 		# plt.ylabel(r"$\xi_0")
 		plt.yscale('log')
 		# Plot a vertical line at xi=5 with the correct height
-		plt.vlines(5,0,max(plot_zero_values), colors='k', linestyle="--")
+		plt.vlines(5,0,max(r_plot_zero_values), colors='k', linestyle="--")
 		# Save the plot to a file
-		plt.savefig("pictures/LE-Exponents.svg")
+		plt.savefig("pictures/TOV-Exponents-Logp.svg")
 		plt.show()
 		
-	def solveForexponent_vals(self, array, xi0, T0, dT0, xi_end, dxi):
+	def solveForexponent_vals(self, array, r0, u0, p0, R, rend, dr):
 		for i in array:
 			self.times[i] = time.time()
-			result, succ, xi_max = Solver.solveLE(xi0, T0, dT0, xi_end, dxi, self.exponent_vals[i], suppressWarning=True)
+			results_TOV, results_TOV_small, succ_TOV, r_max = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=0, exponent=Solver.exponent_vals[i], suppressWarning=True)
+			results_LE, succ_LE, xi_max = Solver.convertSolveLE(r0, u0, p0, R, rend, dr, exponent=Solver.exponent_vals[i], suppressWarning=True, suppressOutput=True)
+			self.r_maxes[i] = r_max
 			self.xi_maxes[i] = xi_max
-			self.xi_Bool[i] = 1 if xi_max < xi_end else 0
+			self.r_Bool[i] = 1 if r_max < rend else 0
+			self.xi_Bool[i] = 1 if xi_max < rend else 0
 			self.times[i] = time.time()-self.times[i]
 		
 # Keep track of total time spent
@@ -105,16 +114,10 @@ A = 5
 Solver = Plotter(gamma, A)
 
 # Define initial values
-# These values should not be altered
-xi0 = 0
-T0 = 1
-dT0 = 0
-
-# Define initial values
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 10
+R  = 50
 rend = R
 dr = 0.01
 
@@ -125,21 +128,20 @@ n_step = 0.01
 
 # HINT for choosing N_threads
 # CPU: AMD Ryzen 3700X (8 Cores, 16Threads)
-# xi0=0, T0=1, dT0=0, xi_end=5000, dxi=0.1, 
-# Threads Time (Average over 5 samples)
-# 1       7.27s
-# 2       3.96s
-# 4       2.79s
-# 8       2.43s
-# 16      2.36
+# r0=0, u0=0, p0=1, R=100, rend=5000, dr=0.01, n0 = 0.01, n_max = 4.01, n_step = 0.01
+# Threads Time R=100  Time R=500   Time R=5000
+# 1       45.88s      231.37s      
+# 2       23.57s      123.12s
+# 4       12.75s       73.09s
+# 8        6.74s       64.60s      
+# 16       5.95s      108.62s
+# REMARK: The following variables have the most effect:
+# R  > 100
+# dr < 0.05
+# REMARK2: For good performance/effort choose
+# R  = 100
+# dr = 0.01
+# N_threads = maximum-1
 # Every integer value >=1 is possible
 print("===== Starting Process =====")
-Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=True, N_threads=4)
-
-
-
-
-
-
-
-
+Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=8)
