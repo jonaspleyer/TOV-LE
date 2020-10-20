@@ -1,3 +1,5 @@
+#!/bin/spyder
+
 # Only use this to import the package DiffEqSolver 
 # from ../Solvers/ correctly
 import os, sys
