@@ -18,7 +18,11 @@ warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
 # but overwrite the solving method for the TOV equation
 class DiffEqSolverLogp(DiffEqSolver):
 	# Solves the Tov equation (also for different additional terms present in equation)
-	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0):
+	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None):
+		# Set the exponent n = 1/(gamma-1) if chose different to init
+		if not exponent == None:
+			self.gamma = 1+1/exponent
+		
 		# We have to adjust the EOS to accomodate for the change of variables.
 		self.eos_new = lambda q,r: self.factor*np.exp(q*1/self.gamma)
 		
