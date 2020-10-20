@@ -60,7 +60,7 @@ class Plotter(DiffEqSolverLogp):
 		
 		for i in range(0,len(self.exponent_vals)):
 			if suppressOutput == False:
-				print(str(self.exponent_vals[i]) + "  " + str(self.r_maxes[i]) + "  " + str(self.r_Bool[i]) + "  " + str(self.xi_maxes[i]) + " " + str(self.xi_Bool[i]))
+				print(str(round(self.exponent_vals[i],3)) + "  " + str(round(self.r_maxes[i],3)) + "  " + str(self.r_Bool[i]) + "  " + str(round(self.xi_maxes[i],3)) + " " + str(round(self.xi_Bool[i],3)))
 			if self.r_Bool[i] == 1:
 				r_plot_zero_values.append(self.r_maxes[i])
 				r_plot_exponent_values.append(self.exponent_vals[i])
@@ -124,24 +124,27 @@ dr = 0.01
 # Define the range of exponents to solve for
 n_0 = 0.01
 n_max = 5.01
-n_step = 0.01
+n_step = 0.02
 
 # HINT for choosing N_threads
 # CPU: AMD Ryzen 3700X (8 Cores, 16Threads)
-# r0=0, u0=0, p0=1, R=100, rend=5000, dr=0.01, n0 = 0.01, n_max = 4.01, n_step = 0.01
-# Threads Time R=100  Time R=500   Time R=5000
+# r0=0, u0=0, p0=1, rend=R, dr=0.01, n0 = 0.01, n_max = 4.01, n_step = 0.01
+# Threads Time R=100  Time R=500   Time R=1000
 # 1       45.88s      231.37s      
 # 2       23.57s      123.12s
 # 4       12.75s       73.09s
-# 8        6.74s       64.60s      
+# 8        6.74s       64.60s      455.7s
 # 16       5.95s      108.62s
 # REMARK: The following variables have the most effect:
 # R  > 100
 # dr < 0.05
 # REMARK2: For good performance/effort choose
-# R  = 100
+# R  = 50
 # dr = 0.01
+# n_0 = 0.01
+# n_max = 5.01
+# n_step = 0.02
 # N_threads = maximum-1
-# Every integer value >=1 is possible
+
 print("===== Starting Process =====")
-Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=8)
+Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=14)
