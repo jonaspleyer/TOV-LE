@@ -2,7 +2,7 @@
 
 ## Structure:
 
-Aspects - Contains routines that depend on Solvers and yield plots
+### Aspects - Contains routines that depend on Solvers and yield plots
 
 * :arrow_right: LE-Exponents
   * Plots the value of xi_0 (theta(xi_0)=0) for the LE equation for different exponents n
@@ -15,7 +15,7 @@ Aspects - Contains routines that depend on Solvers and yield plots
 * :arrow_right: TOV-Terms
   * Plots TOV results for different amounts of terms present
 
-Solvers - Contains differnt ways to solving the LE and TOV equations
+### Solvers - Contains differnt ways to solving the LE and TOV equations
 
 * :arrow_right: Solver
   * Standard Solver. Solves TOV and LE as written down
