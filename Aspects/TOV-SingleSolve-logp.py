@@ -67,7 +67,7 @@ class Plotter(DiffEqSolverLogp):
 			polyTable.scale(1.2,1.675)
 			
 			# Save the figure
-			plt.savefig('pictures/TOV-SingleSolve-OverR.svg')
+			plt.savefig('pictures/TOV-SingleSolve-logp.svg')
 			plt.show()
 		else:
 			print("Solving was not possible.")
