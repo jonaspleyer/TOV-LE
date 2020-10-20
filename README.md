@@ -4,23 +4,23 @@
 
 Aspects - Contains routines that depend on Solvers and yield plots
 
-* LE-Exponents
-  * :arrow_right:	Plots the value of xi_0 (theta(xi_0)=0) for the LE equation for different exponents n
-* TOV-LE-Combi
-  * :arrow_right:	Plots TOV and LE results
-* TOV-SingleSolve-Logp
-  * :arrow_right: 	Plots TOV results for 1/r solving method (currently not working)
-* TOV-SingleSolve
-  * :arrow_right:	Plots TOV results
-* TOV-Terms
-  * :arrow_right:	Plots TOV results for different amounts of terms present
+* :arrow_right: LE-Exponents
+  * Plots the value of xi_0 (theta(xi_0)=0) for the LE equation for different exponents n
+* :arrow_right: TOV-LE-Combi
+  * Plots TOV and LE results
+* :arrow_right: TOV-SingleSolve-Logp
+  * Plots TOV results for 1/r solving method (currently not working)
+* :arrow_right: TOV-SingleSolve
+  * Plots TOV results
+* :arrow_right: TOV-Terms
+  * Plots TOV results for different amounts of terms present
 
 Solvers - Contains differnt ways to solving the LE and TOV equations
 
-* Solver
-  * :arrow_right:	Standard Solver. Solves TOV and LE as written down
-* SolverLogp
-  * :arrow_right:	Solve with q=log(p) instead of p
+* :arrow_right: Solver
+  * Standard Solver. Solves TOV and LE as written down
+* :arrow_right: SolverLogp
+  * Solve with q=log(p) instead of p
 
 ## Usage
 
