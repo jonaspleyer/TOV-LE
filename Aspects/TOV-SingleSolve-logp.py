@@ -51,7 +51,7 @@ class Plotter(DiffEqSolverLogp):
 				["TOV", r'$r_{max}$', "%.4g" % r_max_TOV],
 				["TOV", r'$p(r_{max})$', "%.4g" % results_TOV_small[:,2][-1]],
 				["TOV", r'$\rho(r_ {max})$', "%.4g" % results_TOV_small[:,3][-1]],
-				["LE,", r'$r_{max}$', "%.4g" % r_max_LE],
+				["LE",  r'$r_{max}$', "%.4g" % r_max_LE],
 				["LE",  r'$p(r_{max})$', "%.4g" % results_LE[:,2][-1]],
 				["LE",  r'$\rho(r_ {max})$', "%.4g" % results_LE[:,3][-1]]
 				]
