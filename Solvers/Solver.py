@@ -33,7 +33,11 @@ class DiffEqSolver:
 		)(dr * f(r		  , u			 , p)[0]			 , dr * f(r		  , u			 , p)[1])
 
 	# Solves the Tov equation (also for different additional terms present in equation)
-	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0):
+	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None):
+		# Set the exponent n = 1/(gamma-1) if chose different to init
+		if not exponent == None:
+			self.gamma = 1+1/exponent
+		
 		# Define the function that returns the increment
 		# The parameter "terms" defines how many additional terms are present when comparing
 		# the LE and TOV equation
