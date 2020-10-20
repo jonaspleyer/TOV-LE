@@ -1,4 +1,5 @@
-#!/bin/spyder
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # Only use this to import the package DiffEqSolver 
 # from ../Solvers/ correctly
