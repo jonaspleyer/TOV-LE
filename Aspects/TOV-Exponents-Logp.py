@@ -15,7 +15,7 @@ import numpy as np
 import multiprocessing
 
 class Plotter(DiffEqSolverLogp):
-	def solveMultiprocExponents(self, n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads = 13):
+	def solveMultiprocExponents(self, n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads = 2):
 		#
 		self.exponent_vals = np.arange(n_0,n_max+n_step,n_step)
 		
