@@ -108,7 +108,7 @@ start = time.time()
 # Create an instance of the Solver with polytropic EOS
 n = 2
 gamma = 1+1/n
-A = 5
+A = 10
 
 # Initialise Solver with arbitrary values for A and gamma (will not be used)
 Solver = Plotter(gamma, A)

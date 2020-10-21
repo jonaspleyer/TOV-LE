@@ -31,7 +31,7 @@ class DiffEqSolverLESubs(DiffEqSolver):
 		K = A**(-g)
 		
 		rho0 = A*p0**(1/g)
-		alpha =  np.sqrt((n+1)*rho0**(1/n)*K/(4*np.pi))
+		alpha =  np.sqrt((n+1)*rho0**(1/n-1)*K/(4*np.pi))
 		xi0 = r0/alpha
 		xi_end = rend/alpha
 		xi_R = R/alpha
