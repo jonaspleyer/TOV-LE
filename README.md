@@ -4,6 +4,16 @@
 
 ### Aspects - Contains routines that depend on Solvers and yield plots
 
+Aspect		|Solver		|Description				
+--------------------|---------------|---------------------------------------
+LE-Exponents        |Solver 		|Plots the value of xi_0 (theta(xi_0)=0) for the LE equation for different exponents n
+TOV-LE-Combi        |Solver         |Plots TOV and LE results
+TOV-Exponents-Logp  |SolverLogp     |Same as LE-Exponents but also for TOV results with q=log(p) substitution
+TOV-Exponents-LESubs|SolverLESubs   |Same as LE-Exponents but also for TOV results with same substitution as LE equation
+TOV-SingleSolve     |Solver         |Plots TOV results
+TOV-SingleSolve-Logp|SolverLogp     |Plots TOV results for q=log(p) solving method
+TOV-Terms           |Solver         |Plots TOV results for different amounts of terms present
+
 * :arrow_right: LE-Exponents
   * Plots the value of xi_0 (theta(xi_0)=0) for the LE equation for different exponents n
   * Uses Solver
