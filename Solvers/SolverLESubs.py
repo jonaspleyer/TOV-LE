@@ -18,7 +18,7 @@ warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
 # but overwrite the solving method for the TOV equation
 class DiffEqSolverLESubs(DiffEqSolver):
 	# Solves the Tov equation (also for different additional terms present in equation)
-	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None, suppressWarning=False):
+	def solveTOV(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None, suppressWarning=False, noconvert=False):
 		# Set the exponent n = 1/(gamma-1) if chose different to init
 		if exponent == None:
 			gamma = self.gamma
@@ -62,9 +62,12 @@ class DiffEqSolverLESubs(DiffEqSolver):
 		u = u0
 
 		# Initialise the result arrays (for total and inside)
-		results = np.array([[xi0*alpha, u0, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T0,xi0)]])
-		results_small = np.array([[xi0*alpha, u0, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T0,xi0)]])
-		
+		if noconvert==False:
+			results = np.array([[xi0*alpha, u0, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T0,xi0)]])
+			results_small = np.array([[xi0*alpha, u0, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T0,xi0)]])
+		else:
+			results = np.array([[xi0, u0, T, self.eos_new(T0,xi0)]])
+			results_small = np.array([[xi0, u0, T, self.eos_new(T0,xi0)]])
 		# Make sure that errors are raised
 		np.seterr(all = "raise")
 		 
@@ -77,22 +80,38 @@ class DiffEqSolverLESubs(DiffEqSolver):
 					# Increase the radial coordinate
 					xi = xi + dxi
 					# Append the calculated values to the results array
-					results = np.concatenate((results, np.array([[xi*alpha, u, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T,xi)]])))
-					results_small = np.concatenate((results_small, np.array([[xi*alpha, u, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T,xi)]])))
+					if noconvert==False:
+						results = np.concatenate((results, np.array([[xi*alpha, u, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T,xi)]])))
+						results_small = np.concatenate((results_small, np.array([[xi*alpha, u, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T,xi)]])))
+					else:
+						results = np.concatenate((results, np.array([[xi, u, T, self.eos_new(T,xi)]])))
+						results_small = np.concatenate((results_small, np.array([[xi, u, T, self.eos_new(T,xi)]])))
 				except:
 					break
-				if K*rho0**(1+1/n)*T**(n+1) <= 0:
+				if T <= 0:
 					break
 			else:
 				u, T = [u, 0]
 				xi = xi + dxi
-				results = np.concatenate((results, np.array([[xi*alpha, u, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T,xi)]])))
+				if noconvert==False:
+					results = np.concatenate((results, np.array([[xi*alpha, u, K*rho0**(1+1/n)*T**(n+1), self.eos_new(T,xi)]])))
+				else:
+					results = np.concatenate((results, np.array([[xi, u, T, self.eos_new(T,xi)]])))
 		# Return the results and a True value for success of the method
 		if xi == 0:
-			return results, results_small, False, xi*alpha
+			if noconvert==False:
+				return results, results_small, False, xi*alpha
+			else:
+				return results, results_small, False, xi
 		elif xi < xi_R:
 			if suppressWarning==False:
 				print("Warning: Solving only possible up to r = " + str(results[-1][0]) + " with m = " + str(results[-1][1]) + " and p = " + str(results[-1][2]))
-			return results, results_small, True, xi*alpha
+			if noconvert==False:
+				return results, results_small, True, xi*alpha
+			else:
+				return results, results_small, True, xi
 		elif xi > xi_R:
-			return results, results_small, True, xi*alpha
+			if noconvert==False:
+				return results, results_small, True, xi*alpha
+			else:
+				return results, results_small, True, xi
