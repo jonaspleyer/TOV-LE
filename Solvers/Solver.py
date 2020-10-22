@@ -146,11 +146,12 @@ class DiffEqSolver:
 	# Converts results from LE equation to compare with TOV results
 	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None, suppressWarning=False, suppressOutput=False, noconvert=False):
 		# Gather all important variables
-		g = self.gamma
+		A = self.factor
 		if exponent == None:
-			A = self.factor
+			g = self.gamma
 		else:
-			A = exponent
+			g = 1 + 1/exponent
+			
 		rho0 = A*p0**(1/g)
 		alpha =  np.sqrt(g/(g-1)*rho0**(g-2)/(4*np.pi)/A**(g))
 		xi_end = R/alpha
