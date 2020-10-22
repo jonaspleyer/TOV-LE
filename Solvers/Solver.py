@@ -144,7 +144,7 @@ class DiffEqSolver:
 			return [], False, False
 	
 	# Converts results from LE equation to compare with TOV results
-	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None, suppressWarning=False, suppressOutput=False):
+	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None, suppressWarning=False, suppressOutput=False, noconvert=False):
 		# Gather all important variables
 		g = self.gamma
 		if exponent == None:
@@ -158,6 +158,8 @@ class DiffEqSolver:
 		
 		# Solve the LE equation
 		results_LE, succ, xi_max = self.solveLE(0,1,0,xi_end, dxi, exponent=exponent, suppressWarning=suppressWarning)
+		if noconvert==True:
+			return results_LE, succ, xi_max
 		r_max = xi_max*alpha
 		
 		# If this has no success, we do not need to further evaluate
