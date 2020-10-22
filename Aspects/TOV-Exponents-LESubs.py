@@ -108,7 +108,7 @@ start = time.time()
 # Create an instance of the Solver with polytropic EOS
 n = 2
 gamma = 1+1/n
-A = 10
+A = 2
 
 # Initialise Solver with arbitrary values for A and gamma (will not be used)
 Solver = Plotter(gamma, A)
@@ -119,7 +119,7 @@ u0 = 0.0
 p0 = 1
 R  = 50
 rend = R
-dr = 0.01
+dr = 0.05
 
 # Define the range of exponents to solve for
 n_0 = 0.01
