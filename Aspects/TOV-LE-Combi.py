@@ -47,8 +47,8 @@ class Plotter(DiffEqSolver):
 		plt.subplot(2,1,2)
 		
 		# Plot the density for the LE and TOV solution
-		plt.plot(results_LE[:,0], results_LE[:,3], label=r'$\rho_{TOV}$', linestyle='--', c='black')
-		plt.plot(results_TOV[:,0], results_TOV[:,3], label=r'$\rho_{LE}$', linestyle='-.', c='black')
+		plt.plot(results_TOV[:,0], results_TOV[:,3], label=r'$\rho_{TOV}$', linestyle='-.', c='black')
+		plt.plot(results_LE[:,0], results_LE[:,3], label=r'$\rho_{LE}$', linestyle='--', c='black')
 		
 		# Plot m(r) TOV and LE
 		plt.plot(results_TOV[:, 0], results_TOV[:, 1], label=r'$m_{TOV}$', linestyle='-', c='black')
