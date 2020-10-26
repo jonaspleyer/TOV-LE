@@ -13,20 +13,29 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import multiprocessing
+import ctypes
 
 class Plotter(DiffEqSolverLESubs):
-	def solveMultiprocExponents(self, n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads = 2):
-		#
+	def solveMultiprocExponents(self, n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads = 2, N_terms=1):
+		# Define linestyles for plotting later
+		linestyles = ['-', '--', '-.', ':']
+		
+		# Define the array which contains all exponents n = 1/(gamma-1)
 		self.exponent_vals = np.arange(n_0,n_max+n_step,n_step)
+		N_exponents = len(self.exponent_vals)
 		
-		# max_r_results = multiprocessing.Array('l',[[0,False,0,0] for i in range(0,len(self.exponent_vals))])
-		self.r_maxes = multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))])
-		self.xi_maxes = multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))])
-		self.r_Bool = multiprocessing.Array('l',[0 for i in range(0,len(self.exponent_vals))])
-		self.xi_Bool = multiprocessing.Array('l',[0 for i in range(0,len(self.exponent_vals))])
-		self.times = multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))])
+		# Define multiprocessing arrays that can be accessed even if processes run in parallel
+		self.r_maxes_all = multiprocessing.Array(ctypes.c_float, N_exponents*(N_terms+1))
+		self.r_Bool_all = multiprocessing.Array(ctypes.c_float, N_exponents*(N_terms+1))
 		
-		# Initialise threads
+		# for j in range(0,N_terms):
+		# 	self.r_maxes.append(multiprocessing.Array('f',[0 for i in range(0,len(self.exponent_vals))]))
+		#	self.r_Bool.append(multiprocessing.Array('l',[0 for i in range(0,len(self.exponent_vals))]))
+		self.xi_maxes = multiprocessing.Array('f',[0 for i in range(0,N_exponents)])
+		self.xi_Bool = multiprocessing.Array('l',[0 for i in range(0,N_exponents)])
+		self.times = multiprocessing.Array('f',[0 for i in range(0,N_exponents)])
+		
+		# Initialise threads; Create list that contains all processes
 		processes = []
 		
 		# Split process in several subthreads
@@ -37,11 +46,11 @@ class Plotter(DiffEqSolverLESubs):
 			j = 0
 			# This distribution is chosen such that all the values with high exponent n
 			# (for which the solving takes longer) are distributed equally about the different threads
-			while N_threads*j+i < len(self.exponent_vals):
+			while N_threads*j+i < N_exponents:
 				array.append(N_threads*j + i)
 				j += 1
 			# Generate the process
-			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(array, r0, u0, p0, R, rend, dr,))
+			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(array, r0, u0, p0, R, rend, dr, N_terms,))
 			# Store it in the x array
 			processes.append(x)
 			x.start()
@@ -53,32 +62,40 @@ class Plotter(DiffEqSolverLESubs):
 		# Create lists to store values for plotting
 		# We differentiatie between values for which the solution 
 		# was successfull and ones where it was not
-		r_plot_zero_values = []
+		r_plot_zero_values = [[]]*(N_terms+1)
 		xi_plot_zero_values = []
-		r_plot_exponent_values = []
+		r_plot_exponent_values = [[]]*(N_terms+1)
 		xi_plot_exponent_values = []
 		
-		for i in range(0,len(self.exponent_vals)):
+		print(self.r_maxes_all)
+		print(r_plot_zero_values)
+		print(r_plot_exponent_values)
+		
+		for i in range(0,N_exponents):
 			if suppressOutput == False:
-				print(str(round(self.exponent_vals[i],3)) + "  " + str(round(self.r_maxes[i],3)) + "  " + str(self.r_Bool[i]) + "  " + str(round(self.xi_maxes[i],3)) + " " + str(round(self.xi_Bool[i],3)))
-			if self.r_Bool[i] == 1:
-				r_plot_zero_values.append(self.r_maxes[i])
-				r_plot_exponent_values.append(self.exponent_vals[i])
+					# print(str(round(self.exponent_vals[i],3)) + "  " + str(round(self.r_maxes[i],3)) + "  " + str(self.r_Bool[i]) + "  " + str(round(self.xi_maxes[i],3)) + " " + str(round(self.xi_Bool[i],3)))
+					pass
+			for j in range(0,N_terms+1):
+				if self.r_Bool_all[j*N_exponents + i] == 1:
+					r_plot_zero_values[j].append(self.r_maxes_all[j*N_exponents + i])
+					r_plot_exponent_values[j].append(self.exponent_vals[i])
 			if self.xi_Bool[i] == 1:
 				xi_plot_zero_values.append(self.xi_maxes[i])
 				xi_plot_exponent_values.append(self.exponent_vals[i])
-		
+		print(r_plot_zero_values)
+		print(r_plot_exponent_values)
 		# Stop the timer
 		end = time.time()
 		
 		# Print Duration
 		print("===== Finished Process =====")
-		print("Duration was " + str(round(end-start,3)) + " Seconds for " + str(len(self.exponent_vals)) + " Test Samples with " + str(N_threads) + " threads")
+		print("Duration was " + str(round(end-start,3)) + " Seconds for " + str(N_exponents*(N_terms+1)) + " Test Samples with " + str(N_threads) + " threads")
 		
 		# Plot the results
 		# Create figure with right dimensions
 		plt.figure(figsize=[6.4,4])
-		plt.plot(r_plot_exponent_values, r_plot_zero_values, label=r'$r_0$', linestyle="-", c='black')
+		for j in range(0,N_terms):
+			plt.plot(r_plot_exponent_values[j], r_plot_zero_values[j], label=r'$r_0$ $j=$' + str(j), linestyle=linestyles[j], c='black')
 		plt.plot(xi_plot_exponent_values, xi_plot_zero_values, label=r'$\xi_0[r]$', linestyle="-.", c='black')
 		plt.legend()
 		plt.title(r'$r_0$ where $p(r_0)=0$')
@@ -86,19 +103,31 @@ class Plotter(DiffEqSolverLESubs):
 		# plt.ylabel(r"$\xi_0")
 		plt.yscale('log')
 		# Plot a vertical line at xi=5 with the correct height
-		plt.vlines(5,0,max(r_plot_zero_values), colors='k', linestyle="--")
+		# plt.vlines(5,0,max(xi_plot_zero_values), colors='k', linestyle="--")
 		# Save the plot to a file
 		plt.savefig("pictures/TOV-Exponents-LESubs.svg")
 		plt.show()
 		
-	def solveForexponent_vals(self, array, r0, u0, p0, R, rend, dr):
+	def solveForexponent_vals(self, array, r0, u0, p0, R, rend, dr, N_terms):
+		N_exponents = len(self.exponent_vals)
+		
+		# r_maxes_proc = np.frombuffer(self.r_maxes_all.get_obj())
+		# r_maxes = r_maxes_proc.reshape((N_terms, N_exponents))
+		# r_Bool_proc = np.frombuffer(self.r_Bool_all.get_obj())
+		# r_Bool = r_Bool_proc.reshape((N_terms, N_exponents))
+		
 		for i in array:
 			self.times[i] = time.time()
-			results_TOV, results_TOV_small, succ_TOV, r_max = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=0, exponent=Solver.exponent_vals[i], suppressWarning=True)
+			results_TOV = [[]]*N_terms
+			results_TOV_small = [[]]*N_terms
+			succ_TOV = [[]]*N_terms
+			r_max = [[]]*N_terms
+			for j in range(0,N_terms):
+				results_TOV[j], results_TOV_small[j], succ_TOV[j], r_max[j] = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=j, exponent=Solver.exponent_vals[i], suppressWarning=True)
+				self.r_maxes_all[j*N_exponents + i] = r_max[j]
+				self.r_Bool_all[j*N_exponents + i] = 1 if r_max[j] < rend else 0
 			results_LE, succ_LE, xi_max = Solver.convertSolveLE(r0, u0, p0, R, rend, dr, exponent=Solver.exponent_vals[i], suppressWarning=True, suppressOutput=True)
-			self.r_maxes[i] = r_max
-			self.xi_maxes[i] = xi_max
-			self.r_Bool[i] = 1 if r_max < rend else 0
+			self.xi_maxes[i] = xi_max				
 			self.xi_Bool[i] = 1 if xi_max < rend else 0
 			self.times[i] = time.time()-self.times[i]
 		
@@ -108,7 +137,7 @@ start = time.time()
 # Create an instance of the Solver with polytropic EOS
 n = 2
 gamma = 1+1/n
-A = 2
+A = 3
 
 # Initialise Solver with arbitrary values for A and gamma (will not be used)
 Solver = Plotter(gamma, A)
@@ -117,14 +146,14 @@ Solver = Plotter(gamma, A)
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 50
+R  = 10
 rend = R
-dr = 0.05
+dr = 0.02
 
 # Define the range of exponents to solve for
 n_0 = 0.01
-n_max = 5.01
-n_step = 0.02
+n_max = 4.01
+n_step = 0.1
 
 # HINT for choosing N_threads
 # CPU: AMD Ryzen 3700X (8 Cores, 16Threads)
@@ -147,5 +176,4 @@ n_step = 0.02
 # N_threads = maximum-1
 
 print("===== Starting Process =====")
-Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=14)
-# results, results_small, succ, r_max = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=0, exponent=2, suppressWarning=False)
+Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=4, N_terms=2)
