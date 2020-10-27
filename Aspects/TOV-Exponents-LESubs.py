@@ -67,23 +67,18 @@ class Plotter(DiffEqSolverLESubs):
 		r_plot_exponent_values = [[]]*(N_terms+1)
 		xi_plot_exponent_values = []
 		
-		print(self.r_maxes_all)
-		print(r_plot_zero_values)
-		print(r_plot_exponent_values)
-		
 		for i in range(0,N_exponents):
 			if suppressOutput == False:
 					# print(str(round(self.exponent_vals[i],3)) + "  " + str(round(self.r_maxes[i],3)) + "  " + str(self.r_Bool[i]) + "  " + str(round(self.xi_maxes[i],3)) + " " + str(round(self.xi_Bool[i],3)))
 					pass
-			for j in range(0,N_terms+1):
-				if self.r_Bool_all[j*N_exponents + i] == 1:
-					r_plot_zero_values[j].append(self.r_maxes_all[j*N_exponents + i])
-					r_plot_exponent_values[j].append(self.exponent_vals[i])
-			if self.xi_Bool[i] == 1:
-				xi_plot_zero_values.append(self.xi_maxes[i])
-				xi_plot_exponent_values.append(self.exponent_vals[i])
-		print(r_plot_zero_values)
-		print(r_plot_exponent_values)
+		
+		for j in range(0,N_terms+1):
+			r_plot_zero_values[j] = [self.r_maxes_all[i] for i in range(j*N_exponents,(j+1)*N_exponents) if self.r_Bool_all[i] == 1]
+			r_plot_exponent_values[j] = [self.exponent_vals[i] for i in range(0, N_exponents) if self.r_Bool_all[j*N_exponents + i] == 1]
+																			   
+		xi_plot_zero_values = [self.xi_maxes[i] for i in range(0,N_exponents) if self.xi_Bool[i] == 1]
+		xi_plot_exponent_values = [self.exponent_vals[i] for i in range(0,N_exponents) if self.xi_Bool[i] == 1]
+		
 		# Stop the timer
 		end = time.time()
 		
@@ -94,9 +89,9 @@ class Plotter(DiffEqSolverLESubs):
 		# Plot the results
 		# Create figure with right dimensions
 		plt.figure(figsize=[6.4,4])
-		for j in range(0,N_terms):
-			plt.plot(r_plot_exponent_values[j], r_plot_zero_values[j], label=r'$r_0$ $j=$' + str(j), linestyle=linestyles[j], c='black')
-		plt.plot(xi_plot_exponent_values, xi_plot_zero_values, label=r'$\xi_0[r]$', linestyle="-.", c='black')
+		for j in range(0,N_terms+1):
+			plt.plot(r_plot_exponent_values[j], r_plot_zero_values[j], label=r'$r_0$ $j=$' + str(j), linestyle=linestyles[j+1], c='black')
+		plt.plot(xi_plot_exponent_values, xi_plot_zero_values, label=r'$\xi_0[r]$', linestyle="-", c='black')
 		plt.legend()
 		plt.title(r'$r_0$ where $p(r_0)=0$')
 		plt.xlabel(r"Exponent $n=\frac{1}{\gamma-1}$")
@@ -118,11 +113,11 @@ class Plotter(DiffEqSolverLESubs):
 		
 		for i in array:
 			self.times[i] = time.time()
-			results_TOV = [[]]*N_terms
-			results_TOV_small = [[]]*N_terms
-			succ_TOV = [[]]*N_terms
-			r_max = [[]]*N_terms
-			for j in range(0,N_terms):
+			results_TOV = [[]]*(N_terms+1)
+			results_TOV_small = [[]]*(N_terms+1)
+			succ_TOV = [[]]*(N_terms+1)
+			r_max = [[]]*(N_terms+1)
+			for j in range(0,N_terms+1):
 				results_TOV[j], results_TOV_small[j], succ_TOV[j], r_max[j] = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=j, exponent=Solver.exponent_vals[i], suppressWarning=True)
 				self.r_maxes_all[j*N_exponents + i] = r_max[j]
 				self.r_Bool_all[j*N_exponents + i] = 1 if r_max[j] < rend else 0
@@ -148,11 +143,11 @@ u0 = 0.0
 p0 = 1
 R  = 10
 rend = R
-dr = 0.02
+dr = 0.005
 
 # Define the range of exponents to solve for
 n_0 = 0.01
-n_max = 4.01
+n_max = 5.01
 n_step = 0.1
 
 # HINT for choosing N_threads
@@ -176,4 +171,4 @@ n_step = 0.1
 # N_threads = maximum-1
 
 print("===== Starting Process =====")
-Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=4, N_terms=2)
+Solver.solveMultiprocExponents(n_0, n_max, n_step, r0, u0, p0, R, rend, dr, suppressOutput=False, N_threads=14, N_terms=2)
