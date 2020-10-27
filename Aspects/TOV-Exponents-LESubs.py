@@ -47,7 +47,10 @@ class Plotter(DiffEqSolverLESubs):
 			# This distribution is chosen such that all the values with high exponent n
 			# (for which the solving takes longer) are distributed equally about the different threads
 			while N_threads*j+i < N_exponents:
-				array.append(N_threads*j + i)
+				if j%2 == 0:
+					array.append(N_threads*j + i)
+				if j%2 == 1 and N_threads*(j+1)-(i+1) < N_exponents:
+					array.append(N_threads*(j+1)-(i+1))
 				j += 1
 			# Generate the process
 			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(array, r0, u0, p0, R, rend, dr, N_terms,))
@@ -98,7 +101,7 @@ class Plotter(DiffEqSolverLESubs):
 		# plt.ylabel(r"$\xi_0")
 		plt.yscale('log')
 		# Plot a vertical line at xi=5 with the correct height
-		# plt.vlines(5,0,max(xi_plot_zero_values), colors='k', linestyle="--")
+		plt.vlines(5,0,max(xi_plot_zero_values), colors='k', linestyle="-")
 		# Save the plot to a file
 		plt.savefig("pictures/TOV-Exponents-LESubs.svg")
 		plt.show()
@@ -132,7 +135,7 @@ start = time.time()
 # Create an instance of the Solver with polytropic EOS
 n = 2
 gamma = 1+1/n
-A = 3
+A = 1
 
 # Initialise Solver with arbitrary values for A and gamma (will not be used)
 Solver = Plotter(gamma, A)
@@ -141,7 +144,7 @@ Solver = Plotter(gamma, A)
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 10
+R  = 100
 rend = R
 dr = 0.005
 
