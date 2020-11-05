@@ -15,7 +15,7 @@ import time
 import matplotlib.pyplot as plt
 
 class Plotter(DiffEqSolver):
-	def solveMultiprocExponents(self, n_0, n_max, n_step, suppressOutput=False, N_threads = 13):
+	def solveMultiprocExponents(self, n_0, n_max, n_step, suppressOutput=False, N_threads = 13, hideExactValues=True):
 		#
 		self.exponent_vals = np.arange(n_0,n_max+n_step,n_step)
 		
@@ -77,6 +77,9 @@ class Plotter(DiffEqSolver):
 		# Create figure with right dimensions
 		plt.figure(figsize=[6.4,4])
 		plt.plot(plot_exponent_values, plot_zero_values, label=r'$\xi_0$', linestyle="-", c='black')
+		# Plot exact known results
+		if hideExactValues == False:
+			plt.scatter([0,1],[np.sqrt(6), np.pi], color='r', marker='P', label=r'Exact values')
 		plt.legend()
 		plt.title(r'$\xi_0$ where $\theta(\xi_0)=0$')
 		plt.xlabel(r"Exponent $n$")
@@ -129,4 +132,4 @@ n_step = 0.01
 # 16      2.36
 # Every integer value >=1 is possible
 print("===== Starting Process =====")
-Solver.solveMultiprocExponents(n_0, n_max, n_step, suppressOutput=True, N_threads=4)
+Solver.solveMultiprocExponents(n_0, n_max, n_step, suppressOutput=True, N_threads=4, hideExactValues=False)
