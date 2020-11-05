@@ -45,16 +45,16 @@ class DiffEqSolverLESubs(DiffEqSolver):
 		# the LE and TOV equation
 		if terms==0:
 			du = self.RK4(lambda xi, u, T: [4 * np.pi * alpha**3 * self.eos_new(T,xi) * xi ** 2,
-										   -1/((n+1)*K*rho0**(1/n))*1/(alpha*xi**2)*(1 + K*rho0**(1/n)*T) * (4*np.pi*xi**3*alpha**3*K*rho0**(1+1/n)*T**(n+1) + u) / (1 - 2 * u /(alpha*xi)) if xi>0 else 0])
+										   -1/((n+1)*K*rho0**(1/n)*alpha*xi**2)*(1 + K*rho0**(1/n)*T) * (4*np.pi*xi**3*alpha**3*K*rho0**(1+1/n)*T**(n+1) + u) / (1 - 2 * u /(alpha*xi)) if xi>0 else 0])
 		elif terms==1:
 			du = self.RK4(lambda xi, u, T: [4 * np.pi * alpha**3 * self.eos_new(T,xi) * xi ** 2,
-										   -1/((n+1)*K*rho0**(1/n))*1/(alpha*xi**2)*(1 + K*rho0**(1/n)*T) * (4*np.pi*xi**3*alpha**3*K*rho0**(1+1/n)*T**(n+1) + u) if xi>0 else 0])
+										   -1/((n+1)*K*rho0**(1/n)*alpha*xi**2)*(1 + K*rho0**(1/n)*T) * (4*np.pi*xi**3*alpha**3*K*rho0**(1+1/n)*T**(n+1) + u) if xi>0 else 0])
 		elif terms==2:
 			du = self.RK4(lambda xi, u, T: [4 * np.pi * alpha**3 * self.eos_new(T,xi) * xi ** 2,
-										   -1/((n+1)*K*rho0**(1/n))*u/(alpha*xi**2)*(1 + K*rho0**(1/n)*T) if xi>0 else 0])
+										   -u/((n+1)*K*rho0**(1/n)*alpha*xi**2)*(1 + K*rho0**(1/n)*T) if xi>0 else 0])
 		elif terms==3:
 			du = self.RK4(lambda xi, u, T: [4 * np.pi * alpha**3 * self.eos_new(T,xi) * xi ** 2,
-										   -1/((n+1)*K*rho0**(1/n))*u/(alpha*xi**2) if xi>0 else 0])
+										   -u/((n+1)*K*rho0**(1/n)*alpha*xi**2) if xi>0 else 0])
 		# Define the initial values
 		xi = xi0
 		T0 = 1
