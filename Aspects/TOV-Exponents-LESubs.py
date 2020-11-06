@@ -124,7 +124,7 @@ class Plotter(DiffEqSolverLESubs):
 				results_TOV[j], results_TOV_small[j], succ_TOV[j], r_max[j] = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=j, exponent=Solver.exponent_vals[i], suppressWarning=True)
 				self.r_maxes_all[j*N_exponents + i] = r_max[j]
 				self.r_Bool_all[j*N_exponents + i] = 1 if r_max[j] < rend else 0
-			results_LE, succ_LE, xi_max = Solver.convertSolveLE(r0, u0, p0, R, rend, dr, exponent=Solver.exponent_vals[i], suppressWarning=True, suppressOutput=True)
+			results_LE, succ_LE, xi_max = Solver.convertSolveLE(r0, u0, p0, R, rend, dr, exponent=Solver.exponent_vals[i], suppressWarning=True, suppressOutput=True, nointerpolate=True)
 			self.xi_maxes[i] = xi_max				
 			self.xi_Bool[i] = 1 if xi_max < rend else 0
 			self.times[i] = time.time()-self.times[i]
@@ -146,7 +146,7 @@ u0 = 0.0
 p0 = 1
 R  = 100
 rend = R
-dr = 0.005
+dr = 0.01
 
 # Define the range of exponents to solve for
 n_0 = 0.01
