@@ -144,7 +144,7 @@ class DiffEqSolver:
 			return [], False, False
 	
 	# Converts results from LE equation to compare with TOV results
-	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None, suppressWarning=False, suppressOutput=False, noconvert=False):
+	def convertSolveLE(self, r0, u0, p0, R, rend, dr, exponent=None, suppressWarning=False, suppressOutput=False, noconvert=False, nointerpolate=False):
 		# Gather all important variables
 		A = self.factor
 		if exponent == None:
@@ -178,13 +178,18 @@ class DiffEqSolver:
 		
 		# Calculate the LE-Mass in dependece of r
 		# Use an interpolation for this. If it fails communicate that
-		try:
-			rho_LE_interpolate = interp1d(rho_results_LE_transf[:,0],rho_results_LE_transf[:,1], kind='cubic')
-			m_LE_calculated = np.array([[r,integrate.quad(lambda x: 4*np.pi*x**2*rho_LE_interpolate(x),0,r)[0]] for r in rho_results_LE_transf[:,0]])
+		if nointerpolate == True:
+			m_LE_calculated = [[0,0]]*len(rho_results_LE_transf[:,0])
 			succ = True
-		except:
-			m_LE_calculated = np.array([[r,0] for r in rho_results_LE_transf[:,0]])
-			succ = False
+		else:
+			try:
+				rho_LE_interpolate = interp1d(rho_results_LE_transf[:,0],rho_results_LE_transf[:,1], kind='cubic')
+				m_LE_calculated = np.array([[r,integrate.quad(lambda x: 4*np.pi*x**2*rho_LE_interpolate(x),0,r)[0]] for r in rho_results_LE_transf[:,0]])
+				succ = True
+			except:
+				m_LE_calculated = np.array([[r,0] for r in rho_results_LE_transf[:,0]])
+				succ = False
+			
 		
 		# Return an array with all the results. The array is built [[r,m,p,rho],...,]
 		results = np.array([[
