@@ -95,6 +95,14 @@ class Plotter(DiffEqSolverLESubs):
 		for j in range(0,N_terms+1):
 			plt.plot(r_plot_exponent_values[j], r_plot_zero_values[j], label=r'$r_0$ $j=$' + str(j), linestyle=linestyles[j+1], c='black')
 		plt.plot(xi_plot_exponent_values, xi_plot_zero_values, label=r'$\xi_0[r]$', linestyle="-", c='black')
+		# Calculate exact results for LE
+		A = self.factor
+		alpha = lambda n: np.sqrt((n+1)*A**(-2)*p0**((n-1)/(n+1))/(4*np.pi))
+		LE_exact_x_vals =  [0,1]
+		LE_exact_y_vals = [alpha(0)*np.sqrt(6), alpha(1)*np.pi]
+		# Plot them
+		plt.scatter(LE_exact_x_vals, LE_exact_y_vals, label=r'$\xi_0[r]$ exact', c='r', marker="P")
+		
 		plt.legend()
 		plt.title(r'$r_0$ where $p(r_0)=0$')
 		plt.xlabel(r"Exponent $n=\frac{1}{\gamma-1}$")
