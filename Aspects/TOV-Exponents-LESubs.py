@@ -152,14 +152,14 @@ Solver = Plotter(gamma, A)
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 100
+R  = 10
 rend = R
 dr = 0.01
 
 # Define the range of exponents to solve for
 n_0 = 0.01
 n_max = 5.01
-n_step = 0.1
+n_step = 0.2
 
 # HINT for choosing N_threads
 # CPU: AMD Ryzen 3700X (8 Cores, 16Threads)
