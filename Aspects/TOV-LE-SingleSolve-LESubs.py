@@ -68,7 +68,7 @@ class Plotter(DiffEqSolverLESubs):
 			polyTable.scale(1.2,1.675)
 			
 			# Save the figure
-			plt.savefig('pictures/TOV-SingleSolve-LESubs.svg')
+			plt.savefig('pictures/TOV-LE-SingleSolve-LESubs.svg')
 			plt.show()
 		else:
 			print("Solving was not possible.")
