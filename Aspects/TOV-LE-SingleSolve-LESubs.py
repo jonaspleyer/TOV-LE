@@ -8,14 +8,16 @@ currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from Solvers.SolverLogp import DiffEqSolverLogp
+from Solvers.SolverLESubs import DiffEqSolverLESubs
 import matplotlib.pyplot as plt
 
-class Plotter(DiffEqSolverLogp):
-	def solveAndPlotResults(self, r0, u0, p0, R, rend, dr):
+class Plotter(DiffEqSolverLESubs):
+	def solveAndPlotResults(self, r0, u0, p0, R, rend, dr, terms=0):
 		# First we need to solve the equations
-		results_TOV, results_TOV_small, succ_TOV, r_max_TOV = self.solveTOV(r0, u0, p0, R, rend, dr)
+		results_TOV, results_TOV_small, succ_TOV, r_max_TOV = self.solveTOV(r0, u0, p0, R, rend, dr, terms=terms)
+		results_TOV_noconvert, results_TOV_small_noconvert, succ_TOV_noconvert, r_max_TOV_noconvert = self.solveTOV(r0, u0, p0, R, rend, dr, noconvert=True, terms=terms)
 		results_LE, succ_LE, r_max_LE = self.convertSolveLE(r0, u0, p0, R, rend, dr)
+		results_LE_noconvert, succ_LE_noconvert, r_max_LE_noconvert = self.convertSolveLE(r0, u0, p0, R, rend, dr, noconvert=True, suppressWarning=True)
 		# Check if the solving was succ_TOVessful
 		if succ_TOV == True:
 			# Create Plot with different subplots
@@ -37,11 +39,10 @@ class Plotter(DiffEqSolverLogp):
 			plt.plot(results_LE[:, 0], results_LE[:, 1], label=r'$m_{LE}(r)$', linestyle='-.', c='black')
 			plt.legend()
 			
-			# Plot density
 			plt.subplot(2,2,3)
-			plt.title("Density")
-			plt.plot(results_TOV[:,0], results_TOV[:,3], label=r'$\rho_{TOV} (r)$', linestyle='-', c='black')
-			plt.plot(results_LE[:,0], results_LE[:,3], label=r'$\rho_{LE} (r)$', linestyle='-.', c='black')
+			plt.title(r'$\theta$')
+			plt.plot(results_TOV_noconvert[:,0], results_TOV_noconvert[:,2], label=r'$\theta_{TOV}$', linestyle='-', c='black')
+			plt.plot(results_LE_noconvert[:,0], results_LE_noconvert[:,1], label=r'$\theta_{LE}$', linestyle='-.', c='black')
 			plt.legend()
 			
 			# Create table with all values
@@ -51,10 +52,10 @@ class Plotter(DiffEqSolverLogp):
 			plt_vals = [
 				["TOV", r'$r_{max}$', "%.4g" % r_max_TOV],
 				["TOV", r'$p(r_{max})$', "%.4g" % results_TOV_small[:,2][-1]],
-				["TOV", r'$\rho(r_ {max})$', "%.4g" % results_TOV_small[:,3][-1]],
+				["TOV", r'$\theta(\xi_ {max})$', "%.4g" % results_TOV_small_noconvert[:,2][-1]],
 				["LE",  r'$r_{max}$', "%.4g" % r_max_LE],
 				["LE",  r'$p(r_{max})$', "%.4g" % results_LE[:,2][-1]],
-				["LE",  r'$\rho(r_ {max})$', "%.4g" % results_LE[:,3][-1]]
+				["LE",  r'$\theta(\xi_ {max})$', "%.4g" % results_LE_noconvert[:,1][-1]]
 				]
 			polyTable = plt.table(cellText=plt_vals,
 						 colLabels=['Equation','Parameter', 'Value'],
@@ -67,7 +68,7 @@ class Plotter(DiffEqSolverLogp):
 			polyTable.scale(1.2,1.675)
 			
 			# Save the figure
-			plt.savefig('pictures/TOV-SingleSolve-logp.svg')
+			plt.savefig('pictures/TOV-SingleSolve-LESubs.svg')
 			plt.show()
 		else:
 			print("Solving was not possible.")
@@ -81,11 +82,11 @@ rend = R
 dr = 0.01
 
 # Create an instance of the Solver with polytropic EOS
-n = 2
+n = 3.3
 gamma = 1+1/n
 A = 5
 
 # Initialise Solver
 Solver = Plotter(gamma, A)
 
-Solver.solveAndPlotResults(r0, u0, p0, R, rend, dr)
+Solver.solveAndPlotResults(r0, u0, p0, R, rend, dr, terms=0)
