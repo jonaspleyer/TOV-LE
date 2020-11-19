@@ -14,6 +14,7 @@ TOV-Exponents-Logp          |SolverLogp     |Same as LE-Exponents but also for T
 TOV-Exponents-LESubs|SolverLESubs   |Same as LE-Exponents but also for TOV results with same substitution as LE equation
 TOV-SingleSolve             |Solver         |Plots TOV results
 TOV-LE-SingleSolve-LESubs   |SolverLESubs   |Plots TOV and LE Results with theta substitution
+TOV-LE-SingleSolve-LESubs-InitialVals   |SolverLESubs   |Plots TOV and LE Results with theta substitution and different initial Values for A and p0
 TOV-LE-SingleSolve-Logp        |SolverLogp     |Plots TOV results for q=log(p) solving method
 TOV-Terms                   |Solver         |Plots TOV results for different amounts of terms present
 
