@@ -41,6 +41,7 @@ class Plotter(DiffEqSolverLESubs):
 		self.xi_Bool = multiprocessing.Array('l',[0 for i in range(0,N_exponents)])
 		self.times = multiprocessing.Array('f',[0 for i in range(0,N_exponents)])
 		
+		self.counter = multiprocessing.Value(ctypes.c_int, 0)
 		# Initialise threads; Create list that contains all processes
 		processes = []
 		
@@ -58,67 +59,36 @@ class Plotter(DiffEqSolverLESubs):
 				j += 1
 			
 			# Generate the process
-			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(exponents, r0, u0, p0, R, rend, dr, N_terms,))
+			x = multiprocessing.Process(target=self.solveForexponent_vals, args=(exponents, r0, u0, p0, R, rend, dr, N_terms, ))
 			# Store x in the processes array
 			processes.append(x)
 			# Actually start solving the equations in different processes
 			x.start()
-			# Join the processes to have them end continue the method at the time when all processes have finished
+		
+		# Join the processes to have them end continue the method at the time when all processes have finished
+		for x in processes:
 			x.join()
 		
-		# Create lists to store values for plotting
-		# We differentiatie between values for which the solution 
-		# was successfull and ones where it was not
-		r_plot_zero_values_all = [[]]*(N_terms+1)
-		r_plot_A_initial_values_all = [[]]*(N_terms+1)
-		r_plot_p0_initial_values_all = [[]]*(N_terms+1)
-		r_plot_exponent_values_all = [[]]*(N_terms+1)
-		
-		xi_plot_zero_values = []
-		xi_plot_exponent_values = []
-		r_plot_exponent_values = [[]]*(N_terms+1)
-		r_plot_zero_values = [[]]*(N_terms+1)
-		
-		for j in range(0,N_terms+1):
-			r_plot_zero_values_all[j] = np.array([[[self.r_maxes_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] for i in range(0,N_exponents)
-							  if self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] == 1]
-							 for k in range(0,N_A_initial)] for l in range(0,N_p0_initial)])
-			r_plot_exponent_values_all[j] = np.array([[[self.exponents_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] for i in range(0,N_exponents)
-							  if self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] == 1]
-							 for k in range(0,N_A_initial)] for l in range(0,N_p0_initial)])
-			r_plot_A_initial_values_all[j] = np.array([[[self.A_initials_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] for i in range(0,N_exponents)
-							  if self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] == 1]
-							 for k in range(0,N_A_initial)] for l in range(0,N_p0_initial)])
-			r_plot_p0_initial_values_all[j] = np.array([[[self.p0_initials_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] for i in range(0,N_exponents)
-							  if self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] == 1]
-							 for k in range(0,N_A_initial)] for l in range(0,N_p0_initial)])
-			
-			r_plot_zero_values[j] = r_plot_zero_values_all[j][0][0]
-			r_plot_exponent_values[j] = r_plot_exponent_values_all[j][0][0]
-			
-# 			r_plot_zero_values[j] = [[self.r_maxes_all[i] for i in range(j*N_exponents,(j+1)*N_exponents) if self.r_Bool_all[i] == 1]]
-# 			r_plot_exponent_values[j] = [self.exponent_vals[i] for i in range(0, N_exponents) if self.r_Bool_all[j*N_exponents + i] == 1]
+		sys.stdout.write("\n")
 		
 		for i, val in enumerate(self.r_maxes_all):
 			if suppressOutput == False:
 				print("r_end=" + str(round(val,3)) + "   at n=" + str(round(self.exponents_all[i],3)) + "   with A=" + str(round(self.A_initials_all[i],3)) + "   with p0=" + str(round(self.p0_initials_all[i],3)))
-		
-		xi_plot_zero_values = [self.xi_maxes[i] for i in range(0,N_exponents) if self.xi_Bool[i] == 1]
-		xi_plot_exponent_values = [self.exponent_vals[i] for i in range(0,N_exponents) if self.xi_Bool[i] == 1]
 		
 		# Stop the timer
 		end = time.time()
 		
 		# Print Duration
 		print("===== Finished Process =====")
-		print("Duration was " + str(round(end-start,3)) + " Seconds for " + str(N_exponents*(N_terms+1)) + " Test Samples with " + str(N_threads) + " threads")
+		print("Duration was " + str(round(end-start,3)) + " Seconds for " + str(N_exponents*(N_terms+1)*N_A_initial*N_p0_initial) + " Test Samples with " + str(N_threads) + " threads")
 		
 		# Plot the results
 		# Create figure with right dimensions
-		plt.figure(figsize=[6.4,4])
+		fig = plt.figure(figsize=[7,4])
+		ax = plt.subplot(1,1,1)
 
 		# Define colors for different graphs (maximum 6)
-		colors = ['r', 'g', 'b', 'orangered', 'lime','cornflowerblue']
+		colors = ['k','r', 'g', 'b', 'orangered', 'lime','cornflowerblue']
 		# Now set j=0 (corresponds to plain TOV solution)
 		# and l=0 corresponds to the first p0 initial value
 		j = 0
@@ -133,17 +103,21 @@ class Plotter(DiffEqSolverLESubs):
 			Y_mask_TOV = [self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i]==1 for i in range(0,N_exponents)]
 			Y_mask_LE = [self.xi_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i]==1 for i in range(0,N_exponents)]
 			# Plot the graphs
-			plt.plot(X_vals[Y_mask_TOV], Y_vals_TOV[Y_mask_TOV], label=r"$r_0$ TOV for $A=$" + str(self.A_initial_vals[k]), color=colors[k], linestyle='-.')
-			plt.plot(X_vals[Y_mask_LE], Y_vals_LE[Y_mask_LE], label=r"$r_0$ LE  for $A=$" + str(self.A_initial_vals[k]), color=colors[k], linestyle='-')
+			ax.plot(X_vals[Y_mask_TOV], Y_vals_TOV[Y_mask_TOV], label=r"$r_0$ TOV for $A=$" + str(self.A_initial_vals[k]), color=colors[k], linestyle='-.')
+			ax.plot(X_vals[Y_mask_LE], Y_vals_LE[Y_mask_LE], label=r"$r_0$ LE  for $A=$" + str(self.A_initial_vals[k]), color=colors[k], linestyle='-')
 
 		# Formatting of the newly generated plot		
-		plt.legend()
-		plt.title(r'$r_0$ where $p(r_0)=0$')
-		plt.xlabel(r"Exponent $n=\frac{1}{\gamma-1}$")
-		plt.ylabel(r"$r_0$")
-		plt.yscale('log')
-		# Plot a vertical line at xi=5 with the correct height
-# 		plt.vlines(5,0,max(xi_plot_zero_values), colors='k', linestyle="-")
+		ax.set_title(r'$r_0$ where $p(r_0)=0$')
+		ax.set_xlabel(r"Exponent $n=\frac{1}{\gamma-1}$")
+		ax.set_ylabel(r"$r_0$")
+		ax.set_yscale('log')
+		
+		# Resize the whole plot to fit the legend next to it.
+		box = ax.get_position()
+		ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+		# Create the legend right of plot
+		ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+		
 		# Save the plot to a file
 		plt.savefig("pictures/TOV-Exponents-LESubs-InitialVals.svg")
 		plt.show()
@@ -164,21 +138,28 @@ class Plotter(DiffEqSolverLESubs):
 		r_max = [[]]*(N_terms+1)
 		
 		for i in exponents_index:
-			self.times[i] = time.time()
+			A = time.time()
 			for k, A_init in enumerate(self.A_initial_vals):
 				for l, p_init in enumerate(self.p0_initial_vals):
 					self.factor = A_init
 					for j in range(0,N_terms+1):
-						results_TOV[j], results_TOV_small[j], succ_TOV[j], r_max[j] = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=j, exponent=Solver.exponent_vals[i], suppressWarning=True)
-						self.r_maxes_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = r_max[j]
-						self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = 1 if r_max[j] < rend else 0
+						if i>=1 and 0 in [self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + h] for h in range(0,i-1)] and 0 in [int(self.r_maxes_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + h]>0) for h in range(0,i-1)]:
+							self.r_maxes_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = rend
+							self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = 0
+						else:
+							results_TOV[j], results_TOV_small[j], succ_TOV[j], r_max[j] = Solver.solveTOV(r0, u0, p0, R, rend, dr, terms=j, exponent=Solver.exponent_vals[i], suppressWarning=True)
+							self.r_maxes_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = r_max[j]
+							self.r_Bool_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = 1 if r_max[j] < rend else 0
+						# Do this nevertheless if solving was successfull or not
 						self.exponents_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = self.exponent_vals[i]
 						self.A_initials_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = A_init
 						self.p0_initials_all[j*N_exponents*N_A_initial*N_p0_initial + k*N_exponents*N_p0_initial + l*N_exponents + i] = p_init
 					results_LE, succ_LE, xi_max = Solver.convertSolveLE(r0, u0, p0, R, rend, dr, exponent=Solver.exponent_vals[i], suppressWarning=True, suppressOutput=True, nointerpolate=True)
 					self.xi_maxes_all[k*N_exponents*N_p0_initial + l*N_exponents + i] = xi_max
 					self.xi_Bool_all[k*N_exponents*N_p0_initial + l*N_exponents + i] = 1 if xi_max < rend else 0
-			self.times[i] = time.time()-self.times[i]
+			self.counter.value = self.counter.value + 1
+			self.times[i] = time.time()-A
+			print("\rFinished " + str(self.counter.value) + "/" + str(N_exponents) + " exponents with n=" + str(round(self.exponent_vals[i],3)) + " and time t=" + str(round(self.times[i],3)), end='')
 		
 # Keep track of total time spent
 start = time.time()
@@ -195,19 +176,19 @@ Solver = Plotter(gamma, A)
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 1000
+R  = 100000
 rend = R
-dr = 0.01
+dr = 0.5
 
 # Define the range of exponents to solve for
 n_0 = 0.01
-n_max = 5.01
+n_max = 4.91
 n_step = 0.1
 
 # Define the range for initial values
-A_initials = [0.01,0.1,1,10]
+A_initials = [0.1]
 
 p0_initials = [1]
 
 print("===== Starting Process =====")
-Solver.solveMultiprocExponents(n_0, n_max, n_step, A_initials, p0_initials, r0, u0, p0, R, rend, dr, suppressOutput=True, N_threads=12, N_terms=2)
+Solver.solveMultiprocExponents(n_0, n_max, n_step, A_initials, p0_initials, r0, u0, p0, R, rend, dr, suppressOutput=True, N_threads=14, N_terms=2)
