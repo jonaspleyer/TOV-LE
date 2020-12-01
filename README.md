@@ -15,6 +15,8 @@ TOV-Exponents-LESubs|SolverLESubs   |Same as LE-Exponents but also for TOV resul
 TOV-SingleSolve             |Solver         |Plots TOV results
 TOV-LE-SingleSolve-LESubs   |SolverLESubs   |Plots TOV and LE Results with theta substitution
 TOV-LE-SingleSolve-LESubs-InitialVals   |SolverLESubs   |Plots TOV and LE Results with theta substitution and different initial Values for A and p0
+TOV-Exponents-LESubs-InitialVals-Database-CalculateOnly |SolverLESubs   |Calculates TOV and LE Results and stores them in a mongo database. Requires running mongo server!
+TOV-Exponents-LESubs-InitialVals-Database-PlotResults   |-              |Only for plotting results calculated by above method.
 TOV-LE-SingleSolve-Logp        |SolverLogp     |Plots TOV results for q=log(p) solving method
 TOV-Terms                   |Solver         |Plots TOV results for different amounts of terms present
 
