@@ -69,8 +69,9 @@ class Plotter():
 		# Create the legend right of plot
 		axs.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 		plt.savefig("pictures/TOV-Exponents-LESubs-InitialVals-Database-PlotResults.svg")
+		plt.title(str(var2_name) + "=$" + str(var2_fixed_val) + "$")
 		plt.show()
 
 Plodda = Plotter()
 
-Plodda.plotInitialVals(var1_name='p_init', var1_vals=[0.05,1.5,500], var2_name='A_init', var2_fixed_val=1, terms=[0])
+Plodda.plotInitialVals(var1_name='p_init', var1_vals=[0.05,1,4,512], var2_name='A_init', var2_fixed_val=1, terms=[0])
