@@ -38,6 +38,7 @@ class DiffEqSolver:
 		# Set the exponent n = 1/(gamma-1) if chose different to init
 		if not exponent == None:
 			self.gamma = 1+1/exponent
+			self.eos = lambda p,r: self.factor*p**(1/self.gamma) if p > 0 else 0
 		
 		# Define the function that returns the increment
 		# The parameter "terms" defines how many additional terms are present when comparing
