@@ -23,7 +23,7 @@ class TOVLECalculator(DiffEqSolverLESubs):
 		linestyles = ['-', '--', '-.', ':']
 		
 		# Define the array which contains all exponents n = 1/(gamma-1)
-		self.exponent_vals = np.arange(n_0,n_max+n_step,n_step)
+		self.exponent_vals = [round(n,3) for n in np.arange(n_0,n_max+n_step,n_step)]
 		self.A_initial_vals = np.array(A_initials)
 		self.p0_initial_vals = np.array(p0_initials)
 		N_exponents = len(self.exponent_vals)
@@ -45,6 +45,7 @@ class TOVLECalculator(DiffEqSolverLESubs):
 		
 		self.counter = multiprocessing.Value(ctypes.c_int, 0)
 		self.update_counter = multiprocessing.Value(ctypes.c_int, 0)
+		self.result_double = multiprocessing.Value(ctypes.c_int, 0)
 		# Initialise threads; Create list that contains all processes
 		self.processes = []
 		
@@ -78,6 +79,7 @@ class TOVLECalculator(DiffEqSolverLESubs):
 		# Print Duration
 		print("\n===== Finished Process =====")
 		print("Duration was " + str(round(end-start,3)) + " Seconds for " + str(self.counter.value*(N_terms+2)) + " Test Samples with " + str(N_threads) + " threads")
+		print(self.result_double.value)
 		
 	def terminateAll(self):
 		self.Interruptor = 1
@@ -182,6 +184,7 @@ class TOVLECalculator(DiffEqSolverLESubs):
 		# There should not be more than one result. If there are more than one, delete them all.
 		elif len(results) >1:
 			for res in results:
+				self.result_double.value = self.result_double.value + 1
 				collection.delete_one(res)
 				# Also return False statement to calculate new result.
 				return True
@@ -213,14 +216,14 @@ Solver = TOVLECalculator(gamma, A)
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 10
+R  = 1000
 rend = R
-dr = 0.01
+dr = 0.0025
 
 # Define the range of exponents to solve for
-n_0 = 0.01
-n_max = 5.00
-n_step = 0.01
+n_0 = 3.00
+n_max = 4.90
+n_step = 0.02
 
 # Define the range for initial values
 A_initials = [0.025,0.05,0.1,0.2,0.4,0.8,1,2,4,8]
@@ -234,4 +237,4 @@ def signal_handler(sig, frame):
 	Solver.terminateAll()
 
 signal.signal(signal.SIGINT, signal_handler)
-Solver.solveMultiprocExponents(n_0, n_max, n_step, A_initials, p0_initials, r0, u0, p0, R, rend, dr, N_threads=15, N_terms=0)
+Solver.solveMultiprocExponents(n_0, n_max, n_step, A_initials, p0_initials, r0, u0, p0, R, rend, dr, N_threads=8, N_terms=0)
