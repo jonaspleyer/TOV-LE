@@ -10,6 +10,7 @@ Aspect		|Solver		|Description
 LE-Exponents                |Solver 		|Plots the value of xi_0 (theta(xi_0)=0) for the LE equation for different exponents n
 LE-SingleSolve              |Solver         |Plots LE results (for multiple exponents)
 TOV-LE-Combi                |Solver         |Plots TOV and LE results
+TOV-RelEOS-Comparison       |Solver         |Plots the TOV equation for a polytropic and relativistic EOS
 TOV-Exponents-Logp          |SolverLogp     |Same as LE-Exponents but also for TOV results with q=log(p) substitution
 TOV-Exponents-LESubs|SolverLESubs   |Same as LE-Exponents but also for TOV results with same substitution as LE equation
 TOV-SingleSolve             |Solver         |Plots TOV results
