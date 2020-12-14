@@ -66,6 +66,7 @@ class Plotter(DiffEqSolver):
 			plt.plot(results_2[:,0], results_2[:,3], label=r'Density $\rho (r)$ rel EOS', linestyle='--', c='black')
 			plt.title("Density")
 			
+			plt.subplots_adjust(wspace=0.5, hspace=0.5)
 			plt.show()
 		else:
 			print("Solving was not possible.")
