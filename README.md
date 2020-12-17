@@ -31,6 +31,8 @@ Contains differnt ways to solving the LE and TOV equations
 * :arrow_right: SolverLESubs
   * Solve with same substitution as the LE equation
 
+### Standards
+Plotting Standards to obtain similar looking Plots for all Aspects.
 
 ## Usage
 
