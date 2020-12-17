@@ -1,5 +1,6 @@
 from matplotlib import rc
 rc('text', usetex=True)
+rc('font',**{'serif':['Computer Modern Roman']})
 
 linestyles = [
 	'solid',
