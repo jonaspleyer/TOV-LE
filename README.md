@@ -2,6 +2,10 @@
 
 ## Structure:
 
+### EquationOfStates
+
+Contains standalone plotting scripts for EOSs
+
 ### Aspects
 Contains routines that depend on Solvers and yield plots
 
