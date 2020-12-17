@@ -57,7 +57,7 @@ for i, factor in enumerate(factors):
 	y_rel = eos_new(x_vals)/eos_new(p0)
 	x_vals = x_vals/p0
 	
-	plt.plot(x_vals, y_rel, label=r'$\rho(p)_{rel}$ for $A=$'+str(factor), c=curve_colours[0], linestyle=linestyles_group1[i])
+	plt.plot(x_vals, y_rel, label=r'$\rho(p)_{rel}$ for $A='+str(factor)+"$", c=curve_colours[0], linestyle=linestyles_group1[i])
 
 for j, n in enumerate(ns):
 	gamma = 1+1/n
@@ -65,7 +65,7 @@ for j, n in enumerate(ns):
 	x_vals = np.linspace(0.01*p0, factor_range*p0)
 	y_cla = eos(x_vals)/p0**(1/gamma)
 	x_vals = x_vals/p0
-	plt.plot(x_vals, y_cla, label=r'$\rho(p)_{cla}$ for $n=$'+str(n), c=curve_colours[0], linestyle=linestyles_group2[j])	
+	plt.plot(x_vals, y_cla, label=r'$\rho(p)_{cla}$ for $n='+str(n)+"$", c=curve_colours[0], linestyle=linestyles_group2[j])	
 	
 # Set ticks for better display (first x-axis)
 x_N_ticks = 4 # >= 2
