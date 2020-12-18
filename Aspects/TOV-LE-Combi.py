@@ -47,9 +47,9 @@ class Plotter(DiffEqSolver):
 		y_vals_TOV = [results_TOV[:,1][i]/results_TOV[:,0][i]**3/4/np.pi*3 if i >= 1 else np.nan for i in range(0,len(results_TOV[:,0]))]
 		y_vals_LE  = [results_LE[:,1][i]/results_LE[:,0][i]**3/4/np.pi*3 if i >= 1 else np.nan  for i in range(0,len(results_LE[:,0]))]
 		plt.plot(results_TOV[:,0], results_TOV[:,3], label=r'$\rho_{TOV}$', linestyle='-', c='black')
-		plt.plot(results_TOV[:,0], y_vals_TOV, label=r'$m_{TOV}/r^3$', linestyle='--', c='black')
+		plt.plot(results_TOV[:,0], y_vals_TOV, label=r'$\bar{\rho}_{TOV}$', linestyle='--', c='black')
 		plt.plot(results_LE[:,0], results_LE[:,3], label=r'$\rho_{LE}$', linestyle=':', c='black')
-		plt.plot(results_LE[:,0], y_vals_LE, label=r'$m_{LE}/r^3$', linestyle=(0,(1,5)), c='black')
+		plt.plot(results_LE[:,0], y_vals_LE, label=r'$\bar{\rho}_{LE}$', linestyle=(0,(1,5)), c='black')
 		plt.legend()
 		
 		# Next subplot for Mass
