@@ -34,7 +34,8 @@ class Plotter(DiffEqSolver):
 		# Check if the solving was successful
 		
 		# Initialise plot with right size
-		plt.figure(figsize=[8,6])
+		cm = 1/2.54
+		plt.figure(figsize=[16*cm,12*cm])
 		
 		for i in range(4):
 			if succ[i] == True:
@@ -47,13 +48,13 @@ class Plotter(DiffEqSolver):
 				plt.plot(results[i][:, 0], results[i][:, 2], label=r'$i=$' + str(3-i), linestyle=linestyles[i], c='black')
 				
 				# Plot mass
-				plt.subplot(2,2,2)
+				plt.subplot(2,2,3)
 				if i == 1:
 					plt.title(r'Mass $m(r)$')
 				plt.plot(results[i][:, 0], results[i][:, 1], label=r'$i=$' + str(3-i), linestyle=linestyles[i], c='black')
 				
 				# Plot density
-				plt.subplot(2,2,3)
+				plt.subplot(2,2,2)
 				if i == 1:
 					plt.title(r'Density $\rho(r)$')
 					
@@ -91,10 +92,10 @@ class Plotter(DiffEqSolver):
 		# Calculate the difference
 		difference_p_TOV_LE = [p_LE_interpolate(r)-p_TOV_interpolate(r) for r in r_range]
 		# Plot the difference
-		plt.plot(r_range, difference_p_TOV_LE, label=r'$p_{LE}-p_{TOV}$', linestyle=linestyles[1], c='black')
+		plt.plot(r_range, difference_p_TOV_LE, label=r'$p_{LE}-p_{TOV,0}$', linestyle=linestyles[1], c='black')
 		
 		plt.legend()
-		plt.title("TOV-0 and LE results")
+		plt.title("TOV$_0$ and LE results")
 		
 		# General configuration of the total plot
 		plt.tight_layout()
@@ -103,7 +104,7 @@ class Plotter(DiffEqSolver):
 		plt.show()
 		matplotlib.use("pgf")
 		matplotlib.rcParams.update({
-		    "pgf.texsystem": "pdflatex",
+# 		    "pgf.texsystem": "pdflatex",
 		    'font.family': 'serif',
 		    'text.usetex': True,
 		    'pgf.rcfonts': False,
@@ -114,7 +115,7 @@ class Plotter(DiffEqSolver):
 r0 = 0
 u0 = 0
 p0 = 0.5
-R  = 1.4
+R  = 2.2
 rend = R
 dr = 0.001
 
