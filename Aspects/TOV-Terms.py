@@ -12,6 +12,7 @@ from Solvers.Solver import DiffEqSolver
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+import matplotlib
 
 # We create a subclass if the DiffEqSolver Class to still have all functions needed
 # Furthermore we add a function to solve and plot the TOV equation for different given terms
@@ -100,6 +101,14 @@ class Plotter(DiffEqSolver):
 		plt.subplots_adjust(hspace=0.3)
 		plt.savefig('pictures/TOV-Terms.svg')
 		plt.show()
+		matplotlib.use("pgf")
+		matplotlib.rcParams.update({
+		    "pgf.texsystem": "pdflatex",
+		    'font.family': 'serif',
+		    'text.usetex': True,
+		    'pgf.rcfonts': False,
+		})
+		plt.savefig("pictures/TOV-Terms.pgf", dpi=1000, bbox_inches='tight')
 
 # Define initial values
 r0 = 0
