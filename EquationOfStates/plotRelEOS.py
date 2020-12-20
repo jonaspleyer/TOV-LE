@@ -11,8 +11,6 @@ import numpy as np
 import matplotlib
 from scipy.interpolate import interp1d
 
-import Standards.PlottingStandards as standards
-
 ns = [0.2,1,2]
 n = 0.5
 gamma = 1+1/n
@@ -86,3 +84,11 @@ plt.yticks(y_ticks, y_labels)
 plt.legend()
 plt.savefig("RelEOS.svg", dpi=1000, bbox_inches='tight')
 plt.show()
+matplotlib.use("pgf")
+matplotlib.rcParams.update({
+    "pgf.texsystem": "pdflatex",
+    'font.family': 'serif',
+    'text.usetex': True,
+    'pgf.rcfonts': False,
+})
+plt.savefig("RelEOS.pgf", dpi=1000, bbox_inches='tight')
