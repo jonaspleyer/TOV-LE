@@ -3,6 +3,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 from scipy.interpolate import interp1d
 from scipy.misc import derivative
 import scipy.integrate as integrate
@@ -15,7 +16,6 @@ parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
 from Solvers.Solver import DiffEqSolver
-import Standards.PlottingStandards as Standards
 
 class Plotter(DiffEqSolver):
 	def solveAndPlotResults(self, r0, u0, p0, R, rend, dr):
@@ -37,10 +37,10 @@ class Plotter(DiffEqSolver):
 		# Create a subplot for the different pressures and for the mass and density
 		# Subplot for pressure
 		plt.subplot(2,2,1)
-		plt.plot(results_TOV[:, 0], results_TOV[:, 2], label=r'Pressure $p_{TOV}$', linestyle='-', c='black')
-		plt.plot(results_LE[:, 0], results_LE[:, 2], label=r'Pressure $p_{LE}$', linestyle=':', c='black')
+		plt.plot(results_TOV[:, 0], results_TOV[:, 2], label=r'$p_{TOV}$', linestyle='-', c='black')
+		plt.plot(results_LE[:, 0], results_LE[:, 2], label=r'$p_{LE}$', linestyle=':', c='black')
 		# Create new y-ticks
-		plt.legend()
+		plt.legend(loc='upper right')
 		
 		# Next subplot for Density
 		plt.subplot(2,2,2)
@@ -50,13 +50,13 @@ class Plotter(DiffEqSolver):
 		plt.plot(results_TOV[:,0], y_vals_TOV, label=r'$\bar{\rho}_{TOV}$', linestyle='--', c='black')
 		plt.plot(results_LE[:,0], results_LE[:,3], label=r'$\rho_{LE}$', linestyle=':', c='black')
 		plt.plot(results_LE[:,0], y_vals_LE, label=r'$\bar{\rho}_{LE}$', linestyle=(0,(1,5)), c='black')
-		plt.legend()
+		plt.legend(loc='upper right')
 		
 		# Next subplot for Mass
 		plt.subplot(2,2,3)
 		plt.plot(results_TOV[:, 0], results_TOV[:, 1], label=r'$m_{TOV}$', linestyle='-', c='black')
 		plt.plot(results_LE[:,0],results_LE[:,1], label='$m_{LE}$', linestyle=':', c='black')
-		plt.legend()
+		plt.legend(loc='upper left')
 		
 		# Next subplot for m(r)/r**3
 		plt.subplot(2,2,4)
@@ -65,12 +65,20 @@ class Plotter(DiffEqSolver):
 		y_vals_LE  = [results_LE[:,1][i]/results_LE[:,0][i] if i >= 1 else np.nan  for i in range(0,len(results_LE[:,0]))]
 		plt.plot(results_TOV[:,0], y_vals_TOV, label=r'$m_{TOV}/r$', linestyle='-', c='black')
 		plt.plot(results_LE[:,0], y_vals_LE, label=r'$m_{LE}/r$', linestyle=':', c='black')
-		plt.legend()
+		plt.legend(loc='upper right')
 
 		# Save the total picture
 		plt.savefig('pictures/TOV-LE-Combi.svg')
 		print("Saved Plot under pictures/TOV-LE-Combi.svg \n")
 		plt.show()
+		matplotlib.use("pgf")
+		matplotlib.rcParams.update({
+		    "pgf.texsystem": "pdflatex",
+		    'font.family': 'serif',
+		    'text.usetex': True,
+		    'pgf.rcfonts': False,
+		})
+		plt.savefig("RelEOS.pgf", dpi=1000, bbox_inches='tight')
 		
 # Values of interest are mainly between 1.5 and 3 since those correspond to gamma = 1+1/n = 4/3, 5/3
 n = 3
