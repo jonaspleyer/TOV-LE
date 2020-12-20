@@ -78,7 +78,7 @@ class Plotter(DiffEqSolver):
 		    'text.usetex': True,
 		    'pgf.rcfonts': False,
 		})
-		plt.savefig("RelEOS.pgf", dpi=1000, bbox_inches='tight')
+		plt.savefig("pictures/TOV-LE-Combi.pgf", dpi=1000, bbox_inches='tight')
 		
 # Values of interest are mainly between 1.5 and 3 since those correspond to gamma = 1+1/n = 4/3, 5/3
 n = 3
