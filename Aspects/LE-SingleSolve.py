@@ -57,7 +57,7 @@ gamma = 1+1/n
 A = 1
 
 # Define a range of exponents to plot functions for (maximum 4)
-exponents = [0,1,2,5]
+exponents = [0,1,5]
 
 # Initialise Solver
 Solver = Plotter(gamma, A)
