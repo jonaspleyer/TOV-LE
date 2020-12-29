@@ -10,6 +10,7 @@ sys.path.append(parentdir)
 
 from Solvers.Solver import DiffEqSolver
 import matplotlib.pyplot as plt
+import matplotlib
 
 class Plotter(DiffEqSolver):
 	def solveAndPlotResults(self, xi0, T0, dT0, xi_max, dxi, exponents, suppressWarning=False):
@@ -32,12 +33,21 @@ class Plotter(DiffEqSolver):
 		plt.legend()
 		plt.savefig('pictures/LE-SingleSolve.svg')
 		plt.show()
+		matplotlib.use("pgf")
+		matplotlib.rcParams.update({
+# 		    "pgf.texsystem": "pdflatex",
+		    'font.family': 'serif',
+		    'text.usetex': True,
+		    'pgf.rcfonts': False,
+		})
+		plt.savefig("pictures/LE-SingleSolve.pgf", dpi=1000, bbox_inches='tight')
+
 
 # Define inital values
 xi0 = 0
 T0 = 1
 dT0 = 0
-xi_max = 1000
+xi_max = 10
 dxi = 0.01
 
 # Create an instance of the Solver with polytropic EOS
@@ -47,7 +57,7 @@ gamma = 1+1/n
 A = 1
 
 # Define a range of exponents to plot functions for (maximum 4)
-exponents = [1,2,3,4]
+exponents = [0,1,2,5]
 
 # Initialise Solver
 Solver = Plotter(gamma, A)
