@@ -25,7 +25,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{5.490697in}{3.987608in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{5.490697in}{4.186682in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -38,8 +38,8 @@
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
 \pgfpathlineto{\pgfqpoint{5.490697in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{5.490697in}{3.987608in}}%
-\pgfpathlineto{\pgfqpoint{0.000000in}{3.987608in}}%
+\pgfpathlineto{\pgfqpoint{5.490697in}{4.186682in}}%
+\pgfpathlineto{\pgfqpoint{0.000000in}{4.186682in}}%
 \pgfpathclose%
 \pgfusepath{fill}%
 \end{pgfscope}%
@@ -658,6 +658,12 @@
 \pgfpathmoveto{\pgfqpoint{0.508807in}{3.887608in}}%
 \pgfpathlineto{\pgfqpoint{5.390697in}{3.887608in}}%
 \pgfusepath{stroke}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
+\pgfsetstrokecolor{textcolor}%
+\pgfsetfillcolor{textcolor}%
+\pgftext[x=2.949752in,y=3.970941in,,base]{\color{textcolor}\rmfamily\fontsize{12.000000}{14.400000}\selectfont Relativistic Equation of State}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%

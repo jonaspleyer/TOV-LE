@@ -82,6 +82,7 @@ y_labels = [str(round(tick,1))+r"$\rho_{0}$" for tick in y_ticks]
 plt.xticks(x_ticks, x_labels)
 plt.yticks(y_ticks, y_labels)
 plt.legend()
+plt.title("Relativistic Equation of State")
 plt.savefig("RelEOS.svg", dpi=1000, bbox_inches='tight')
 plt.show()
 matplotlib.use("pgf")
