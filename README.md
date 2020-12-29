@@ -35,9 +35,6 @@ Contains differnt ways to solving the LE and TOV equations
 * :arrow_right: SolverLESubs
   * Solve with same substitution as the LE equation
 
-### Standards
-Plotting Standards to obtain similar looking Plots for all Aspects.
-
 ## Usage
 
 Usage for all Aspects is the same. Enter the directory and execute the corresponding python file in a python shell.
