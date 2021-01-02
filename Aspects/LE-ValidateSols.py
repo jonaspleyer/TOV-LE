@@ -30,24 +30,24 @@ class Plotter(DiffEqSolver):
 		
 		# Initialise plot with right size
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,6*cm])
+		plt.figure(figsize=[16*cm,9*cm])
 		
 		for i, exponent in enumerate(exponents):
 			results[i], succ[i], xi_end[i] = self.solveLE(xi0, T0, dT0, xi_max, dxi, exponent=exponent, suppressWarning=suppressWarning)
 			# Check if the solving was successful
 			if succ[i] == True:
-				plt.subplot(1, 2, 1)
-				plt.plot(results[i][:, 0], results[i][:, 1], label=r'$\theta_{calc}$ for $n=$' + str(exponent), linestyle=linestyles[i+1], c='black')
-				x_vals = np.linspace(xi0,zerovals[i])
-# 				plt.plot(x_vals, [solutions[i](x_val) for x_val in x_vals], label=r'$\theta_{exct}$ for $n=$' + str(exponent), linestyle=linestyles[i+4], c='k')
-				plt.legend()
-				plt.title(r'Exact Solutions for $n=0,1,5$')
-				
-				plt.subplot(1, 2, 2)
+				plt.subplot(3, 2, 2*i+1)
+				if i==0:
+					plt.title(r'Difference $\Delta=\theta_{calc}-\theta_{exct}$')
 				diff = [results[i][:,1][j]-solutions[i](results[i][:,0][j]) for j in range(len(results[i][:,0]))]
-				plt.plot(results[i][:,0], diff, label=r'$\theta_{calc}-\theta_{exct}$', linestyle=standards.linestyles[1+i], c='k')
+				plt.plot(results[i][:,0], diff, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
 				plt.legend()
-				plt.title(r'Difference for $n=$' + str(exponent))
+				plt.subplot(3, 2, 2*i+2)
+				if i==0:
+					plt.title(r'Difference $\Delta/\theta_{exct}$ in [%]')
+				diff_rel = [diff[j]/solutions[i](results[i][:,0][j]) for j in range(len(diff))]
+				plt.plot(results[i][:,0], diff_rel, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
+				plt.legend()
 			else:
 				print("Solving was not possible for $n=$"+str(exponent))
 		plt.tight_layout()
@@ -68,7 +68,7 @@ class Plotter(DiffEqSolver):
 xi0 = 0
 T0 = 1
 dT0 = 0
-xi_max = 10
+xi_max = 100
 dxi = 0.03
 
 # Create an instance of the Solver with polytropic EOS
