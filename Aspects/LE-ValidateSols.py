@@ -36,16 +36,20 @@ class Plotter(DiffEqSolver):
 			results[i], succ[i], xi_end[i] = self.solveLE(xi0, T0, dT0, xi_max, dxi, exponent=exponent, suppressWarning=suppressWarning)
 			# Check if the solving was successful
 			if succ[i] == True:
+				# Create plots for the difference between calculated results and exact
 				plt.subplot(3, 2, 2*i+1)
 				if i==0:
+					# Only create Title for the subplot in the first row
 					plt.title(r'Difference $\Delta=\theta_{calc}-\theta_{exct}$')
 				diff = [results[i][:,1][j]-solutions[i](results[i][:,0][j]) for j in range(len(results[i][:,0]))]
 				plt.plot(results[i][:,0], diff, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
 				plt.legend()
+				
+				# Create plots for the difference between calculated results and exact in %
 				plt.subplot(3, 2, 2*i+2)
 				if i==0:
 					plt.title(r'Difference $\Delta/\theta_{exct}$ in [%]')
-				diff_rel = [diff[j]/solutions[i](results[i][:,0][j]) for j in range(len(diff))]
+				diff_rel = [diff[j]/solutions[i](results[i][:,0][j])*100 for j in range(len(diff))]
 				plt.plot(results[i][:,0], diff_rel, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
 				plt.legend()
 			else:
