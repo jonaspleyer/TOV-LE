@@ -13,7 +13,7 @@ import matplotlib.cbook
 warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
 
 class DiffEqSolver:
-	def __init__(self, gamma, A):
+	def __init__(self, gamma=4/3, A=1):
 		self.gamma = gamma
 		self.factor = A
 		# Define the equation of state rho(p,r) = A*p^g
