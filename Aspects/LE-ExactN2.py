@@ -68,7 +68,7 @@ class Plotter(DiffEqSolver):
 		
 		# Plot the radius of convergence
 		ax2 = plt.subplot(2,2,2)
-		ax2.set_title("Radius of convergence")
+		ax2.set_title("Radius of convergence $R_n$")
 		ax2.plot(range(2,2*len(b),2), conv_radius, c='k', label='$R_n$')
 		ax2.legend()
 		
@@ -82,9 +82,9 @@ class Plotter(DiffEqSolver):
 		ax3.set_xticklabels(tickslabels)
 		
 		ax4 = plt.subplot(2,2,4)
-		diff_rel = np.array([(results[:,1][i]-y_vals[i])/results[:,1][i] for i in range(len(y_vals))])[mask]
+		diff_rel = np.array([(results[:,1][i]-y_vals[i])/results[:,1][i]*100 for i in range(len(y_vals))])[mask]
 		ax4.plot(x_vals[mask], diff_rel, label=r'$\Delta/\theta_{calc}$', c='k', linestyle=standards.linestyles[0])
-		ax4.set_title(r'Relative Difference $\Delta/\theta_{calc}$')
+		ax4.set_title(r'Relative Difference $\Delta/\theta_{calc}$ [%]')
 		ax4.legend()
 		ax4.set_xticks(ticks)
 		ax4.set_xticklabels(tickslabels)
