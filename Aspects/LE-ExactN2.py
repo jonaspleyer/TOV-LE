@@ -51,7 +51,7 @@ class Plotter(DiffEqSolver):
 		
 		ax1 = plt.subplot(2,2,1)
 		# Set the plot title
-		ax1.set_title(r'Series $\theta_{ser}=\sum b_n\xi^{2n}$')
+		ax1.set_title(r'Series $\theta_{ser}=\sum b_m\xi^{2m}$')
 		# Plot the LE results from series expansion
 		ax1.plot(x_vals, y_vals, label=r'$\theta_{ser}$', c='k', linestyle=standards.linestyles[0])
 		# Plot the solution of the differential equation as well
@@ -69,7 +69,7 @@ class Plotter(DiffEqSolver):
 		# Plot the radius of convergence
 		ax2 = plt.subplot(2,2,2)
 		ax2.set_title("Radius of convergence $R_n$")
-		ax2.plot(range(2,2*len(b),2), conv_radius, c='k', label='$R_n$')
+		ax2.plot(range(1,len(b)), conv_radius, c='k', label='$R_n$')
 		ax2.legend()
 		
 		ax3 = plt.subplot(2,2,3)
