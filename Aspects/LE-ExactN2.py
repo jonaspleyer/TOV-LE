@@ -26,7 +26,7 @@ class Plotter(DiffEqSolver):
 			except:
 				print("Stopped calculating")
 				break
-			
+		
 		# Determine the radius of convergence
 		conv_radius = [np.float(1/(abs(d)**(1/(2*n+2)))) for n, d in enumerate(b[1:])]
 		# Create a function that calculates the value of theta at value xi
@@ -47,14 +47,15 @@ class Plotter(DiffEqSolver):
 		
 		# Initialise plot with right size
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,12*cm])
+		plt.figure(figsize=[16*cm,6*cm])
 		
-		ax1 = plt.subplot(2,2,1)
+		ax1 = plt.subplot(1,2,1)
 		# Set the plot title
 		ax1.set_title(r'Series $\theta_{ser}=\sum b_m\xi^{2m}$')
 		# Plot the LE results from series expansion
 		ax1.plot(x_vals, y_vals, label=r'$\theta_{ser}$', c='k', linestyle=standards.linestyles[0])
 		# Plot the solution of the differential equation as well
+		ax1.plot(results[:,0], results[:,1], label=r'$\theta_{calc}$', c='k', linestyle=standards.linestyles[1])
 		
 		# Set the ticks to show a tick where the last radius value was calculated
 		ticks = np.arange(0,conv_radius[-1],1)
@@ -67,27 +68,27 @@ class Plotter(DiffEqSolver):
 		ax1.legend()
 		
 		# Plot the radius of convergence
-		ax2 = plt.subplot(2,2,2)
-		ax2.set_title("Radius of convergence $R_n$")
+		ax2 = plt.subplot(1,2,2)
+		ax2.set_title("Radius of convergence $R_m$")
 		ax2.plot(range(1,len(b)), conv_radius, c='k', label='$R_n$')
 		ax2.legend()
 		
-		ax3 = plt.subplot(2,2,3)
-		mask = x_vals<=conv_radius[-1]*0.93
-		diff = np.array([results[:,1][i]-y_vals[i] for i in range(len(y_vals))])[mask]
-		ax3.plot(x_vals[mask], diff, label=r'$\Delta$', c='k', linestyle=standards.linestyles[1])
-		ax3.legend()
-		ax3.set_title(r'Difference $\Delta=\theta_{calc}-\theta_{ser}$')
-		ax3.set_xticks(ticks)
-		ax3.set_xticklabels(tickslabels)
-		
-		ax4 = plt.subplot(2,2,4)
-		diff_rel = np.array([(results[:,1][i]-y_vals[i])/results[:,1][i]*100 for i in range(len(y_vals))])[mask]
-		ax4.plot(x_vals[mask], diff_rel, label=r'$\Delta/\theta_{calc}$', c='k', linestyle=standards.linestyles[0])
-		ax4.set_title(r'Relative Difference $\Delta/\theta_{calc}$ [%]')
-		ax4.legend()
-		ax4.set_xticks(ticks)
-		ax4.set_xticklabels(tickslabels)
+# 		ax3 = plt.subplot(2,2,3)
+# 		mask = x_vals<=conv_radius[-1]*0.98
+# 		diff = np.array([results[:,1][i]-y_vals[i] for i in range(len(y_vals))])[mask]
+# 		ax3.plot(x_vals[mask], diff, label=r'$\Delta$', c='k', linestyle=standards.linestyles[1])
+# 		ax3.legend()
+# 		ax3.set_title(r'Difference $\Delta=\theta_{calc}-\theta_{ser}$')
+# 		ax3.set_xticks(ticks)
+# 		ax3.set_xticklabels(tickslabels)
+# 		
+# 		ax4 = plt.subplot(2,2,4)
+# 		diff_rel = np.array([(results[:,1][i]-y_vals[i])/results[:,1][i]*100 for i in range(len(y_vals))])[mask]
+# 		ax4.plot(x_vals[mask], diff_rel, label=r'$\Delta/\theta_{calc}$', c='k', linestyle=standards.linestyles[0])
+# 		ax4.set_title(r'Relative Difference $\Delta/\theta_{calc}$ [%]')
+# 		ax4.legend()
+# 		ax4.set_xticks(ticks)
+# 		ax4.set_xticklabels(tickslabels)
 		
 		# Show the final plot
 		plt.tight_layout()
@@ -106,7 +107,7 @@ class Plotter(DiffEqSolver):
 Solver = Plotter()
 
 # Describes the number of steps to take to calculate the exponents
-steps_max = 100
+steps_max = 250
 # This is the initial value of Theta_0 and also the first coefficient of the series expansion of Theta.
 b0 = 1
 xi_max = 10
