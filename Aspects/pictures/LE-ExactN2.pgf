@@ -1030,15 +1030,15 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{5.445932in}{0.390000in}}%
+\pgfpathmoveto{\pgfqpoint{5.416032in}{0.390000in}}%
 \pgfpathlineto{\pgfqpoint{6.071435in}{0.390000in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{6.099213in}{0.390000in}}{\pgfqpoint{6.099213in}{0.417778in}}%
 \pgfpathlineto{\pgfqpoint{6.099213in}{0.597500in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{6.099213in}{0.625278in}}{\pgfqpoint{6.071435in}{0.625278in}}%
-\pgfpathlineto{\pgfqpoint{5.445932in}{0.625278in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{5.418154in}{0.625278in}}{\pgfqpoint{5.418154in}{0.597500in}}%
-\pgfpathlineto{\pgfqpoint{5.418154in}{0.417778in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{5.418154in}{0.390000in}}{\pgfqpoint{5.445932in}{0.390000in}}%
+\pgfpathlineto{\pgfqpoint{5.416032in}{0.625278in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{5.388254in}{0.625278in}}{\pgfqpoint{5.388254in}{0.597500in}}%
+\pgfpathlineto{\pgfqpoint{5.388254in}{0.417778in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{5.388254in}{0.390000in}}{\pgfqpoint{5.416032in}{0.390000in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -1049,15 +1049,15 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{5.473710in}{0.521111in}}%
-\pgfpathlineto{\pgfqpoint{5.751487in}{0.521111in}}%
+\pgfpathmoveto{\pgfqpoint{5.443810in}{0.521111in}}%
+\pgfpathlineto{\pgfqpoint{5.721588in}{0.521111in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=5.862599in,y=0.472500in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle R_n\)}%
+\pgftext[x=5.832699in,y=0.472500in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle R_m\)}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

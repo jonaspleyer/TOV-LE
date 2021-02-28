@@ -70,7 +70,7 @@ class Plotter(DiffEqSolver):
 		# Plot the radius of convergence
 		ax2 = plt.subplot(1,2,2)
 		ax2.set_title("Radius of convergence $R_m$")
-		ax2.plot(range(1,len(b)), conv_radius, c='k', label='$R_n$')
+		ax2.plot(range(1,len(b)), conv_radius, c='k', label='$R_m$')
 		ax2.legend()
 		
 # 		ax3 = plt.subplot(2,2,3)
