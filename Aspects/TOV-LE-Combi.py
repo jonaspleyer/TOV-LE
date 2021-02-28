@@ -4,6 +4,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+import tikzplotlib
+
 from scipy.interpolate import interp1d
 from scipy.misc import derivative
 import scipy.integrate as integrate
@@ -18,7 +20,7 @@ sys.path.append(parentdir)
 from Solvers.Solver import DiffEqSolver
 
 class Plotter(DiffEqSolver):
-	def solveAndPlotResults(self, r0, u0, p0, R, rend, dr):
+	def solveAndPlotResults(self, r0, u0, p0, R, rend, dr, noExport=True):
 		# Print information
 		print("===== Parameter Values =====")
 		print("gamma     = " + str(self.gamma))
@@ -77,6 +79,7 @@ class Plotter(DiffEqSolver):
 		plt.savefig('pictures/TOV-LE-Combi.svg')
 		print("Saved Plot under pictures/TOV-LE-Combi.svg \n")
 		plt.show()
+		
 		matplotlib.use("pgf")
 		matplotlib.rcParams.update({
 # 		    "pgf.texsystem": "pdflatex",
@@ -84,12 +87,16 @@ class Plotter(DiffEqSolver):
 		    'text.usetex': True,
 		    'pgf.rcfonts': False,
 		})
-		plt.savefig("pictures/TOV-LE-Combi.pgf", dpi=1000, bbox_inches='tight')
+		if noExport==False:
+			plt.savefig("pictures/TOV-LE-Combi.pgf", dpi=1000, bbox_inches='tight')
+			print("Saved Plot under pictures/TOV-LE-Combi.pgf \n")
+			tikzplotlib.save("pictures/TOV-LE-Combi.tex")
+			print("Saved Plot under pictures/TOV-LE-Combi.tex \n")
 		
 # Values of interest are mainly between 1.5 and 3 since those correspond to gamma = 1+1/n = 4/3, 5/3
 n = 3
 gamma = 1+1/n
-A = 2
+A = 4
 
 # Create instance of solver with exponent
 Solver = Plotter(gamma,A)
@@ -97,10 +104,10 @@ Solver = Plotter(gamma,A)
 # Set initial values
 r0 = 0
 u0 = 0
-p0 = 0.5
-R = 2.5
+p0 = 2
+R = 1
 rend = R
 dr = 0.01
 
 # Solve and plot results
-Solver.solveAndPlotResults(r0,u0,p0,R,rend,dr)
+Solver.solveAndPlotResults(r0,u0,p0,R,rend,dr,noExport=False)
