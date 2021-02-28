@@ -73,11 +73,12 @@ class DiffEqSolver:
 					# Increase the radial coordinate
 					r = r + dr
 					# Append the calculated values to the results array
-					results = np.concatenate((results, np.array([[r, u, p, self.eos(p,r)]])))
-					results_small = np.concatenate((results_small, np.array([[r, u, p, self.eos(p,r)]])))
+					if p <= 0:
+						break
+					else:
+						results = np.concatenate((results, np.array([[r, u, p, self.eos(p,r)]])))
+						results_small = np.concatenate((results_small, np.array([[r, u, p, self.eos(p,r)]])))
 				except:
-					break
-				if p <= 0:
 					break
 			else:
 				u, p = [u, 0]
