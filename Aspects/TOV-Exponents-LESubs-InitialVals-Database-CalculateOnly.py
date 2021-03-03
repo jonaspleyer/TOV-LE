@@ -216,21 +216,21 @@ Solver = TOVLECalculator(gamma, A)
 r0 = 0
 u0 = 0.0
 p0 = 1
-R  = 500
+R  = 10000
 rend = R
-dr = 0.000001
+dr = 0.01
 
 # Define the range of exponents to solve for
-n_0 = -0.72
-n_max = 0
-n_step = 0.01
+n_0 = 4.112
+n_max = 4.12
+n_step = 0.001
 
 # Define the range for initial values
 # A_initials = [0.025,0.05,0.1,0.2,0.4,0.8,1,2,4,8,16,32,64,128,256,512,1024]
-A_initials = [0.025,0.05,0.1,0.2,0.4,0.8,1,2,4]
+A_initials = [8]
 
 # p0_initials = [0.05,0.1,0.2,0.4,0.8,1,2,4,8,16,32,64,128,256,512]
-p0_initials = [0.1,0.2,0.4,0.8,1,2]
+p0_initials = [1]
 
 print(time.strftime('%X %x %Z'))
 print("===== Starting Process =====")
