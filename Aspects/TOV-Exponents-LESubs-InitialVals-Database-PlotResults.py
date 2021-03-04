@@ -87,7 +87,7 @@ class Plotter():
 			var2_name=r'$p_0$'
 		else:
 			var2_name=r'A'
-		plt.title("$\\xi_0$ for fixed " + var2_name + r'$=' + str(var2_fixed_val) + r'$')
+		plt.title("$r_0$ for fixed " + var2_name + r'$=' + str(var2_fixed_val) + r'$')
 # 		plt.title("$xi_0$ for different initial parameters")
 		plt.savefig('pictures/TOV-Exponents-LESubs-InitialVals-Database-PlotResults.svg')
 		plt.show()
@@ -107,4 +107,4 @@ class Plotter():
 
 Plodda = Plotter()
 
-Plodda.plotInitialVals(var1_name='A_init', var1_vals=[0.1,1,8], var2_name='p_init', var2_fixed_val=1, terms=[0], xlim_low=0, ylim_up=None, noExport=False)
+Plodda.plotInitialVals(var1_name='p_init', var1_vals=[0.1,1,8], var2_name='A_init', var2_fixed_val=1, terms=[0], xlim_low=0, ylim_up=None, noExport=False)
