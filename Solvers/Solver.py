@@ -205,10 +205,10 @@ class DiffEqSolver:
 		return results, succ, r_max
 		
 	# Calculate the total TOV-mass for a given configuration
-	def getMass(self, r0, u0, p0, R, rend, dr):
+	def getMass(self, r0, u0, p0, R, rend, dr, terms=0, exponent=None, suppressWarning=False):
 		# A function to quickly calculate the total mass of the star
 		# First we need to solve the equations
-		results, results_small, succ, r_max = self.solveTOV(r0, u0, p0, R, rend, dr)
+		results, results_small, succ, r_max = self.solveTOV(r0, u0, p0, R, rend, dr, terms=terms, exponent=exponent, suppressWarning=suppressWarning)
 		# Check if the solving was successful
 		if succ == True :
 			# We obtain the mass via the maximum of u(r) since u(r) only increases and is constant for r>=R
