@@ -46,6 +46,11 @@ class Plotter(DiffEqSolver):
 		self.eos = eos_new
 		results_2, results_small_2, succ_2, r_max_2 = self.solveTOV(r0, u0, p0, R, rend, dr)
 		
+		# Plot the results
+		# Create a new figure with the right dimesions
+		cm = 1/2.54
+		plt.figure(figsize=[16*cm,12*cm])
+		
 		# Check if the solving was successful
 		if succ_1 == True and succ_2 == True:
 			# Plot pressure
@@ -68,6 +73,13 @@ class Plotter(DiffEqSolver):
 			plt.plot(results_2[:,0], results_2[:,3], label=r'Density $\rho (r)$ rel EOS', linestyle='--', c='black')
 			plt.legend()
 			plt.title("Density")
+			
+			# Plot EOS
+			plt.subplot(2,2,4)
+			p_vals = np.linspace(0.001*p0,p0)
+			plt.plot(p_vals,self.eos(p_vals,0), label=r'$\rho(p)$',c='black')
+			plt.legend()
+			plt.title("Equation of State")
 			
 			plt.subplots_adjust(wspace=0.5, hspace=0.5)
 			plt.show()
