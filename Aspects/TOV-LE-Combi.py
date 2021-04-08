@@ -6,10 +6,6 @@ import matplotlib.pyplot as plt
 import matplotlib
 import tikzplotlib
 
-from scipy.interpolate import interp1d
-from scipy.misc import derivative
-import scipy.integrate as integrate
-
 # Only use this to import the package DiffEqSolver 
 # from ../Solvers/ correctly
 import os, sys
