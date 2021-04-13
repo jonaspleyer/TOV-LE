@@ -1,0 +1,14 @@
+# Ignore pycache
+Solvers/__pycache__
+Aspects/__pycache__
+Standards/__pycache__
+
+# Ignore old files not used anymore
+EquationOfStates/plotPressure.py
+EquationOfStates/PressureDensity-Alpha-Plot.*
+
+# Ignore spyder files
+.spyproject
+
+# Ignore other files that I dont know why they are here
+EquationOfStates/.idea
