@@ -6,12 +6,6 @@
 %% Make sure the required packages are loaded in your preamble
 %%   \usepackage{pgf}
 %%
-%% and, on pdftex
-%%   \usepackage[utf8]{inputenc}\DeclareUnicodeCharacter{2212}{-}
-%%
-%% or, on luatex and xetex
-%%   \usepackage{unicode-math}
-%%
 %% Figures using additional raster images can only be included by \input if
 %% they are in the same directory as the main LaTeX file. For loading figures
 %% from other directories you can use the `import` package
@@ -364,12 +358,12 @@
 \begin{pgfscope}%
 \pgfpathrectangle{\pgfqpoint{0.374692in}{0.320555in}}{\pgfqpoint{4.650000in}{3.020000in}}%
 \pgfusepath{clip}%
-\pgfsetrectcap%
+\pgfsetbuttcap%
 \pgfsetroundjoin%
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{}{0pt}%
+\pgfsetdash{{3.000000pt}{1.500000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{0.586056in}{3.203283in}}%
 \pgfpathlineto{\pgfqpoint{0.590279in}{3.203283in}}%
 \pgfpathlineto{\pgfqpoint{0.598725in}{3.202888in}}%
@@ -480,7 +474,7 @@
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{{5.550000pt}{2.400000pt}}{0.000000pt}%
+\pgfsetdash{{3.000000pt}{6.000000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{0.586056in}{3.203283in}}%
 \pgfpathlineto{\pgfqpoint{0.590279in}{3.203283in}}%
 \pgfpathlineto{\pgfqpoint{0.598725in}{3.202888in}}%
@@ -589,7 +583,7 @@
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{{9.600000pt}{2.400000pt}{1.500000pt}{2.400000pt}}{0.000000pt}%
+\pgfsetdash{{3.000000pt}{12.000000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{0.586056in}{3.203283in}}%
 \pgfpathlineto{\pgfqpoint{0.590279in}{3.203283in}}%
 \pgfpathlineto{\pgfqpoint{0.598725in}{3.202888in}}%
@@ -830,12 +824,12 @@
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgfsetrectcap%
+\pgfsetbuttcap%
 \pgfsetroundjoin%
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{}{0pt}%
+\pgfsetdash{{3.000000pt}{1.500000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{3.708262in}{3.160000in}}%
 \pgfpathlineto{\pgfqpoint{3.986040in}{3.160000in}}%
 \pgfusepath{stroke}%
@@ -852,7 +846,7 @@
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{{5.550000pt}{2.400000pt}}{0.000000pt}%
+\pgfsetdash{{3.000000pt}{6.000000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{3.708262in}{2.951667in}}%
 \pgfpathlineto{\pgfqpoint{3.986040in}{2.951667in}}%
 \pgfusepath{stroke}%
@@ -869,7 +863,7 @@
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{{9.600000pt}{2.400000pt}{1.500000pt}{2.400000pt}}{0.000000pt}%
+\pgfsetdash{{3.000000pt}{12.000000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{3.708262in}{2.743333in}}%
 \pgfpathlineto{\pgfqpoint{3.986040in}{2.743333in}}%
 \pgfusepath{stroke}%

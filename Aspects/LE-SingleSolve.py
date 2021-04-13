@@ -15,7 +15,10 @@ import matplotlib
 class Plotter(DiffEqSolver):
 	def solveAndPlotResults(self, xi0, T0, dT0, xi_max, dxi, exponents, suppressWarning=False):
 		# Define linestyles for later plotting
-		linestyles = ['-', '--', '-.', ':']
+		linestyles = [
+			(0, (2, 1)),
+			(0, (2, 4)),
+			(0, (2, 8))]
 		
 		# Define arrays that store the information for different runs
 		results = [[]]*len(exponents)
