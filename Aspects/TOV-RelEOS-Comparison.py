@@ -55,22 +55,22 @@ class Plotter(DiffEqSolver):
 		if succ_1 == True and succ_2 == True:
 			# Plot pressure
 			plt.subplot(2,2,1)
-			plt.plot(results_1[:, 0], results_1[:, 2], label=r'Pressure $p(r)$ polytropic EOS', linestyle='-', c='black')
-			plt.plot(results_2[:, 0], results_2[:, 2], label=r'Pressure $p(r)$ rel EOS', linestyle='--', c='black')
+			plt.plot(results_1[:, 0], results_1[:, 2], label=r'$p(r)$ polEOS', linestyle='-', c='black')
+			plt.plot(results_2[:, 0], results_2[:, 2], label=r'$p(r)$ rel', linestyle='--', c='black')
 			plt.legend()
 			plt.title("Pressure")
 			
 			# Plot u(r)
 			plt.subplot(2,2,2)
-			plt.plot(results_1[:, 0], results_1[:, 1], label=r'$m(r)$ polytropic EOS', linestyle='-', c='black')
-			plt.plot(results_2[:, 0], results_2[:, 1], label=r'$m(r)$ rel EOS', linestyle='--', c='black')
+			plt.plot(results_1[:, 0], results_1[:, 1], label=r'$m(r)$ pol', linestyle='-', c='black')
+			plt.plot(results_2[:, 0], results_2[:, 1], label=r'$m(r)$ rel', linestyle='--', c='black')
 			plt.legend()
 			plt.title("Mass")
 			
 			# Plot density
 			plt.subplot(2,2,3)
-			plt.plot(results_1[:,0], results_1[:,3], label=r'Density $\rho (r)$ polytropic EOS', linestyle='-', c='black')
-			plt.plot(results_2[:,0], results_2[:,3], label=r'Density $\rho (r)$ rel EOS', linestyle='--', c='black')
+			plt.plot(results_1[:,0], results_1[:,3], label=r'$\rho (r)$ pol', linestyle='-', c='black')
+			plt.plot(results_2[:,0], results_2[:,3], label=r'$\rho (r)$ rel', linestyle='--', c='black')
 			plt.legend()
 			plt.title("Density")
 			
@@ -95,9 +95,9 @@ rend = R
 dr = 0.05
 
 # Create an instance of the Solver with polytropic EOS
-n = 3
+n = 2
 gamma = 1+1/n
-A = 1
+A = 0.01
 
 # Initialise Solver
 Solver = Plotter(gamma, A)
