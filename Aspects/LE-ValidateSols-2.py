@@ -45,6 +45,7 @@ class Plotter(DiffEqSolver):
 					plt.xlabel("$\\xi$")
 				diff = [results[i][:,1][j]-solutions[i](results[i][:,0][j]) for j in range(len(results[i][:,0]))]
 				plt.plot(results[i][:,0], diff, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
+				plt.ticklabel_format(style='plain', useOffset=False)
 				plt.legend()
 				
 				# Create plots for the difference between calculated results and exact in %
@@ -55,6 +56,7 @@ class Plotter(DiffEqSolver):
 					plt.xlabel("$\\xi$")
 				diff_rel = [diff[j]/solutions[i](results[i][:,0][j])*100 for j in range(len(diff))]
 				plt.plot(results[i][:,0], diff_rel, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
+				plt.ticklabel_format(style='plain', useOffset=False)
 				plt.legend()
 			else:
 				print("Solving was not possible for $n=$"+str(exponent))
@@ -80,11 +82,12 @@ class Plotter(DiffEqSolver):
 				plt.title("$\Delta_{max}(d\\xi)$")
 			if i==2:
 					plt.xlabel("$d\\xi$")
-			plt.loglog()
+# 			plt.loglog()
 			plt.plot(steps, diffs[i], c='k', linestyle=linestyles[i], label="$n=$"+str(i))
+			plt.ticklabel_format(style='plain')
 			plt.legend()
 		plt.tight_layout()
-		plt.subplots_adjust(hspace=0.3)
+		plt.subplots_adjust(hspace=0.35)
 # 		plt.xlabel("Stepsize $d\\xi$")
 		plt.savefig('pictures/LE-ValidateSols-2.svg')
 		plt.show()
