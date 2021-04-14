@@ -83,7 +83,7 @@ class Plotter(DiffEqSolver):
 			if i==2:
 					plt.xlabel("$d\\xi$")
 # 			plt.loglog()
-			plt.plot(steps, diffs[i], c='k', linestyle=linestyles[i], label="$n=$"+str(i))
+			plt.plot(steps, diffs[i], c='k', linestyle=linestyles[1+i], label="$n=$"+str(i))
 			plt.ticklabel_format(style='plain')
 			plt.legend()
 		plt.tight_layout()
