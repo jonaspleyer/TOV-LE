@@ -12,3 +12,14 @@ EquationOfStates/PressureDensity-Alpha-Plot.*
 
 # Ignore other files that I dont know why they are here
 EquationOfStates/.idea
+
+# Ignore files for the sun and black hole
+Aspects/database/sun-Values.csv
+Aspects/TOV-SingleSolve-Sun.py
+Aspects/TOV-PhotonBlackHole.py
+
+# Ignore this one where the solving routine is different
+Aspects/TOV-Exponents-InitialVals-Database-CalculateOnly.py
+
+# Ignore exponent vals plot for rel eos 
+Aspects/TOV-Exponents-LESubs-InitialVals-RelEOS.py
