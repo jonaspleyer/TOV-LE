@@ -30,10 +30,12 @@ class Plotter(DiffEqSolver):
 			# Check if the solving was successful
 			if succ[i] == True:
 				# Plot Theta
-				plt.plot(results[i][:, 0], results[i][:, 1], label=r'$\theta(\xi)$ for $n=$' + str(exponent), linestyle=linestyles[i], c='black')
+				plt.plot(results[i][:, 0], results[i][:, 1], label=r'$n=$' + str(exponent), linestyle=linestyles[i], c='black')
 			else:
 				print("Solving was not possible for $n=$"+str(exponent))
 		plt.legend()
+		plt.ylabel(r'LE Solution $\theta$')
+		plt.xlabel(r'Radial Coordinate $\xi$')
 		plt.savefig('pictures/LE-SingleSolve.svg')
 		plt.show()
 		matplotlib.use("pgf")
