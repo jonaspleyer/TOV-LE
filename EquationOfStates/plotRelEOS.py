@@ -71,7 +71,7 @@ x_tickstep = (max(x_vals)-min(x_vals))/(x_N_ticks-1)
 x_ticks = np.arange(min(x_vals), max(x_vals) + x_tickstep/2, x_tickstep)
 # x_labels = [str(round(tick,1))+" $p_0$" for tick in x_ticks]
 x_labels = [str(round(tick,1)) for tick in x_ticks]
-plt.xlabel(r'Density $\rho/\rho_0$')
+plt.ylabel(r'Density $\rho/\rho_0$')
 
 # Do the same for y axis
 y_N_ticks = 6 # >= 2
@@ -81,7 +81,7 @@ y_tickstep = (y_up-y_down)/(y_N_ticks-1)
 y_ticks = np.arange(y_down, y_up + y_tickstep/2, y_tickstep)
 # y_labels = [str(round(tick,1))+r" $\rho_{0}$" for tick in y_ticks]
 y_labels = [str(round(tick,1)) for tick in y_ticks]
-plt.ylabel(r'Pressure $p/p_0$')
+plt.xlabel(r'Pressure $p/p_0$')
 	
 plt.xticks(x_ticks, x_labels)
 plt.yticks(y_ticks, y_labels)

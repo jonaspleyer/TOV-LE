@@ -158,7 +158,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=3.010081in,y=0.238889in,,top]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Density \(\displaystyle \rho/\rho_0\)}%
+\pgftext[x=3.010081in,y=0.238889in,,top]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Pressure \(\displaystyle p/p_0\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -314,7 +314,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=0.238889in,y=2.298588in,,bottom,rotate=90.000000]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Pressure \(\displaystyle p/p_0\)}%
+\pgftext[x=0.238889in,y=2.298588in,,bottom,rotate=90.000000]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Density \(\displaystyle \rho/\rho_0\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfpathrectangle{\pgfqpoint{0.569136in}{0.515123in}}{\pgfqpoint{4.881890in}{3.566929in}}%
