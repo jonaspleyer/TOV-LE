@@ -43,7 +43,7 @@ class Plotter(DiffEqSolver):
 					subpl1 = plt.subplot(3, 2, 2*i+1, sharex=subpl1)
 				if i==1:
 					# Only create Title for the subplot in the first row
-					plt.ylabel(r'Difference $\Delta=\theta_{calc}-\theta_{exct}$')
+					plt.ylabel(r'Difference $\Delta=\theta_{\textrm{calc}}-\theta_{\textrm{exct}}$')
 				if i==2:
 					plt.xlabel(r'Radial Coordinate $\xi/\xi_0$')
 				diff = [results[i][:,1][j]-solutions[i](results[i][:,0][j]) for j in range(len(results[i][:,0]))]
@@ -73,7 +73,7 @@ class Plotter(DiffEqSolver):
 			if i==0:
 				plt.xticks([])
 			if i==1:
-				plt.ylabel("Maximum Difference $\Delta_{max}$")
+				plt.ylabel(r'Maximum Difference $\Delta_{\textrm{max}}$')
 				plt.xticks([])
 			if i==2:
 				plt.xlabel("Stepsize $d\\xi$")
