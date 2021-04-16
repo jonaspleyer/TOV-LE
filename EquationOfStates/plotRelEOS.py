@@ -55,7 +55,7 @@ for i, factor in enumerate(factors):
 	y_rel = eos_new(x_vals)/eos_new(p0)
 	x_vals = x_vals/p0
 	
-	plt.plot(x_vals, y_rel, label=r'$\rho(p)_{rel}$ for $B='+str(factor)+"$", c=curve_colours[0], linestyle=linestyles_group1[i])
+	plt.plot(x_vals, y_rel, label=r'$\rho_{rel}$ for $B='+str(factor)+"$", c=curve_colours[0], linestyle=linestyles_group1[i])
 
 for j, n in enumerate(ns):
 	gamma = 1+1/n
@@ -63,13 +63,15 @@ for j, n in enumerate(ns):
 	x_vals = np.linspace(0.01*p0, factor_range*p0)
 	y_cla = eos(x_vals)/p0**(1/gamma)
 	x_vals = x_vals/p0
-	plt.plot(x_vals, y_cla, label=r'$\rho(p)_{cla}$ for $n='+str(n)+"$", c=curve_colours[0], linestyle=linestyles_group2[j])	
+	plt.plot(x_vals, y_cla, label=r'$\rho_{pol}$ for $n='+str(n)+"$", c=curve_colours[0], linestyle=linestyles_group2[j])
 	
 # Set ticks for better display (first x-axis)
 x_N_ticks = 4 # >= 2
 x_tickstep = (max(x_vals)-min(x_vals))/(x_N_ticks-1)
 x_ticks = np.arange(min(x_vals), max(x_vals) + x_tickstep/2, x_tickstep)
-x_labels = [str(round(tick,1))+"$p_0$" for tick in x_ticks]
+# x_labels = [str(round(tick,1))+" $p_0$" for tick in x_ticks]
+x_labels = [str(round(tick,1)) for tick in x_ticks]
+plt.xlabel(r'Density $\rho/\rho_0$')
 
 # Do the same for y axis
 y_N_ticks = 6 # >= 2
@@ -77,7 +79,9 @@ y_up = max(max(y_cla),max(y_rel))
 y_down = min(min(y_cla),min(y_rel))
 y_tickstep = (y_up-y_down)/(y_N_ticks-1)
 y_ticks = np.arange(y_down, y_up + y_tickstep/2, y_tickstep)
-y_labels = [str(round(tick,1))+r"$\rho_{0}$" for tick in y_ticks]
+# y_labels = [str(round(tick,1))+r" $\rho_{0}$" for tick in y_ticks]
+y_labels = [str(round(tick,1)) for tick in y_ticks]
+plt.ylabel(r'Pressure $p/p_0$')
 	
 plt.xticks(x_ticks, x_labels)
 plt.yticks(y_ticks, y_labels)
