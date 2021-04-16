@@ -37,31 +37,24 @@ class Plotter(DiffEqSolver):
 			# Check if the solving was successful
 			if succ[i] == True:
 				# Create plots for the difference between calculated results and exact
-				plt.subplot(3, 3, 3*i+1)
 				if i==0:
+					subpl1 = plt.subplot(3, 2, 2*i+1)
+				else:
+					subpl1 = plt.subplot(3, 2, 2*i+1, sharex=subpl1)
+				if i==1:
 					# Only create Title for the subplot in the first row
-					plt.title(r'$\Delta=\theta_{calc}-\theta_{exct}$')
+					plt.ylabel(r'Difference $\Delta=\theta_{calc}-\theta_{exct}$')
 				if i==2:
-					plt.xlabel("$\\xi$")
+					plt.xlabel(r'Radial Coordinate $\xi/\xi_0$')
 				diff = [results[i][:,1][j]-solutions[i](results[i][:,0][j]) for j in range(len(results[i][:,0]))]
-				plt.plot(results[i][:,0], diff, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
-				plt.ticklabel_format(style='plain', useOffset=False)
-				plt.legend()
-				
-				# Create plots for the difference between calculated results and exact in %
-				plt.subplot(3, 3, 3*i+2)
-				if i==0:
-					plt.title(r'$\Delta/\theta_{exct}$ in [%]')
-				if i==2:
-					plt.xlabel("$\\xi$")
-				diff_rel = [diff[j]/solutions[i](results[i][:,0][j])*100 for j in range(len(diff))]
-				plt.plot(results[i][:,0], diff_rel, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
-				plt.ticklabel_format(style='plain', useOffset=False)
+				m = max(results[i][:,0])
+				plt.plot(results[i][:,0]/m, diff, label=r'$n=$'+str(exponent), linestyle=standards.linestyles[1+i], c='k')
 				plt.legend()
 			else:
 				print("Solving was not possible for $n=$"+str(exponent))
 		
-		steps = [1,0.75,0.5,0.25,0.1,0.075,0.05,0.025,0.01,0.0075,0.005,0.0025,0.001,0.00075]
+# 		steps = [1,0.8,0.6,0.4,0.2,0.1,0.05,0.025,0.01,0.0075,0.005]
+		steps = np.linspace(1,0.005)
 		
 		# Define arrays that store the information for different runs
 		diffs = [[[]]*len(steps)]*len(exponents)
@@ -71,24 +64,21 @@ class Plotter(DiffEqSolver):
 				results, succ, xi_end = self.solveLE(xi0, T0, dT0, xi_max, step, exponent=exponent, suppressWarning=suppressWarning)
 				# Check if the solving was successful
 				if succ == True:
-# 					diffs[k].append(
  					diffs[k][i] = max([abs(results[:,1][j]-solutions[k](results[:,0][j])) for j in range(len(results[:,0]))])
 				else:
 					print("Solving was not possible for $n=$"+str(exponent))
 # 		plt.title("Convergence of numerical solutions")
 		for i in range(len(exponents)):
-			plt.subplot(3,3,3*i+3)
-			if i==0:
-				plt.title("$\Delta_{max}(d\\xi)$")
+			plt.subplot(3,2,2*i+2)
+			if i==1:
+				plt.ylabel("Maximum Difference $\Delta_{max}$")
 			if i==2:
-					plt.xlabel("$d\\xi$")
-# 			plt.loglog()
+					plt.xlabel("Stepsize $d\\xi$")
 			plt.plot(steps, diffs[i], c='k', linestyle=linestyles[1+i], label="$n=$"+str(i))
 			plt.ticklabel_format(style='plain')
 			plt.legend()
 		plt.tight_layout()
-		plt.subplots_adjust(hspace=0.35)
-# 		plt.xlabel("Stepsize $d\\xi$")
+		plt.subplots_adjust(hspace=.0)
 		plt.savefig('pictures/LE-ValidateSols-2.svg')
 		plt.show()
 		matplotlib.use("pgf")
