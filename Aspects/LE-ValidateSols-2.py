@@ -39,13 +39,11 @@ class Plotter(DiffEqSolver):
 				# Create plots for the difference between calculated results and exact
 				if i==0:
 					subpl1 = plt.subplot(3, 2, 2*i+1)
-					plt.xticks([])
 				else:
 					subpl1 = plt.subplot(3, 2, 2*i+1, sharex=subpl1)
 				if i==1:
 					# Only create Title for the subplot in the first row
 					plt.ylabel(r'Difference $\Delta=\theta_{calc}-\theta_{exct}$')
-					plt.xticks([])
 				if i==2:
 					plt.xlabel(r'Radial Coordinate $\xi/\xi_0$')
 				diff = [results[i][:,1][j]-solutions[i](results[i][:,0][j]) for j in range(len(results[i][:,0]))]
@@ -78,7 +76,7 @@ class Plotter(DiffEqSolver):
 				plt.ylabel("Maximum Difference $\Delta_{max}$")
 				plt.xticks([])
 			if i==2:
-					plt.xlabel("Stepsize $d\\xi$")
+				plt.xlabel("Stepsize $d\\xi$")
 			plt.plot(steps, diffs[i], c='k', linestyle=linestyles[1+i], label="$n=$"+str(i))
 			plt.ticklabel_format(style='plain')
 			plt.legend()
