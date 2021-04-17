@@ -1100,7 +1100,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=0.310139in,y=5.026674in,,bottom,rotate=90.000000]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle r_ 0\)}%
+\pgftext[x=0.310139in,y=5.026674in,,bottom,rotate=90.000000]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Radial Zero Value \(\displaystyle r_0\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfpathrectangle{\pgfqpoint{0.664113in}{3.578401in}}{\pgfqpoint{5.435099in}{2.896547in}}%
@@ -2774,7 +2774,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=3.381663in,y=0.405743in,,top]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle n=\frac{1}{\gamma-1}\)}%
+\pgftext[x=3.381663in,y=0.405743in,,top]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Polytropic Index \(\displaystyle n=\frac{1}{\gamma-1}\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -3804,7 +3804,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=0.223333in,y=2.130127in,,bottom,rotate=90.000000]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle r_ 0\)}%
+\pgftext[x=0.223333in,y=2.130127in,,bottom,rotate=90.000000]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont Radial Zero Value \(\displaystyle r_0\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfpathrectangle{\pgfqpoint{0.664113in}{0.681854in}}{\pgfqpoint{5.435099in}{2.896547in}}%

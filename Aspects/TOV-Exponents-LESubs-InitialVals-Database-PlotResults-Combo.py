@@ -48,22 +48,22 @@ class Plotter():
 		# Get a dict with all LE results for different var1_vals
 		results_LE_1 = {}
 		for var1_val in var1_vals:
-			results_LE_1[var1_val] = list(self.coll.find({var1_name:var1_val, var2_name:var2_fixed_val,'succ':True,'equ_type':'LE', 'terms':0,'n':{"$lt":xlim_up},'n':{"$gt":xlim_low}}))
+			results_LE_1[var1_val] = list(self.coll.find({var1_name:var1_val, var2_name:var2_fixed_val,'succ':True,'equ_type':'LE', 'terms':0,'n':{"$lt":xlim_up, "$gt":xlim_low}}))
 		
 		results_LE_2 = {}
 		for var2_val in var2_vals:
-			results_LE_2[var2_val] = list(self.coll.find({var2_name:var2_val, var1_name:var1_fixed_val,'succ':True,'equ_type':'LE', 'terms':0,'n':{"$lt":xlim_up},'n':{"$gt":xlim_low}}))
+			results_LE_2[var2_val] = list(self.coll.find({var2_name:var2_val, var1_name:var1_fixed_val,'succ':True,'equ_type':'LE', 'terms':0,'n':{"$lt":xlim_up, "$gt":xlim_low}}))
 		
 		# Create a list of dicts with all TOV results for different var1_vals
 		results_TOV_1 = [{}]*(len(terms)+1)
 		for term in terms:
 			for var1_val in var1_vals:
-				results_TOV_1[term][var1_val] = list(self.coll.find({var1_name:var1_val, var2_name:var2_fixed_val,'succ':True,'equ_type':'TOV', 'terms':term, 'n':{"$lt":xlim_up},'n':{"$gt":xlim_low}}))
+				results_TOV_1[term][var1_val] = list(self.coll.find({var1_name:var1_val, var2_name:var2_fixed_val,'succ':True,'equ_type':'TOV', 'terms':term, 'n':{"$lt":xlim_up, "$gt":xlim_low}}))
 		
 		results_TOV_2 = [{}]*(len(terms)+1)
 		for term in terms:
 			for var2_val in var2_vals:
-				results_TOV_2[term][var2_val] = list(self.coll.find({var2_name:var2_val, var1_name:var1_fixed_val,'succ':True,'equ_type':'TOV', 'terms':term, 'n':{"$lt":xlim_up},'n':{"$gt":xlim_low}}))
+				results_TOV_2[term][var2_val] = list(self.coll.find({var2_name:var2_val, var1_name:var1_fixed_val,'succ':True,'equ_type':'TOV', 'terms':term, 'n':{"$lt":xlim_up, "$gt":xlim_low}}))
 		
 		# Finally get the plot results for LE
 		plot_results_LE_1 = {}
@@ -118,7 +118,7 @@ class Plotter():
 				ax1.plot(plot_results_TOV_1[term][var1_val][:,0], plot_results_TOV_1[term][var1_val][:,1], linestyle=self.curve_styles[2*i+1], c=self.curve_colours[0], label=label)
 		
 		ax1.set_yscale('log')
-		ax1.set_ylabel(r'$r_ 0$')
+		ax1.set_ylabel(r'Radial Zero Value $r_0$')
 		ax1.set_ylim([ylim_low,ylim_up])
 		ax1.set_xlabel(r'$\gamma=1+n^{-1}$')
 		ax1.legend(title=r'Fix ' + var2_name + "=" + str(var2_fixed_val))
@@ -134,7 +134,7 @@ class Plotter():
 		
 		ax2.set_yscale('log')
 		ax2.set_ylim([ylim_low,ylim_up])
-		ax2.set_xlabel(r'$n=\frac{1}{\gamma-1}$')
+		ax2.set_xlabel(r'Polytropic Index $n=\frac{1}{\gamma-1}$')
 		ax2.legend(title=r'Fix ' + var1_name + "=" + str(var1_fixed_val))
 		
 		locs_1 = ax2.get_xticks()[1:-1]
@@ -144,7 +144,7 @@ class Plotter():
 		ax1.set_xticks(locs_1)
 		ax1.set_xticklabels(labels_2)
 		
-		ax2.set_ylabel(r'$r_ 0$')
+		ax2.set_ylabel(r'Radial Zero Value $r_0$')
 		plt.tight_layout()
 		
 		filename = 'pictures/TOV-Exponents-LESubs-InitialVals-Database-PlotResults-Combo'
