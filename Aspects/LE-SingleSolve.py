@@ -16,14 +16,18 @@ class Plotter(DiffEqSolver):
 	def solveAndPlotResults(self, xi0, T0, dT0, xi_max, dxi, exponents, suppressWarning=False):
 		# Define linestyles for later plotting
 		linestyles = [
-			(0, (2, 1)),
-			(0, (2, 4)),
-			(0, (2, 8))]
+			(0, (1, 2)),
+			(0, (1, 4)),
+			(0, (1, 6))]
 		
 		# Define arrays that store the information for different runs
 		results = [[]]*len(exponents)
 		succ = [[]]*len(exponents)
 		xi_end = [[]]*len(exponents)
+		
+		# Initialise plot with right size
+		cm = 1/2.54
+		plt.figure(figsize=[8*cm,6*cm])
 		
 		for i, exponent in enumerate(exponents):
 			results[i], succ[i], xi_end[i] = self.solveLE(xi0, T0, dT0, xi_max, dxi, exponent=exponent, suppressWarning=suppressWarning)
@@ -36,6 +40,7 @@ class Plotter(DiffEqSolver):
 		plt.legend()
 		plt.ylabel(r'LE Solution $\theta$')
 		plt.xlabel(r'Radial Coordinate $\xi$')
+		plt.tight_layout()
 		plt.savefig('pictures/LE-SingleSolve.svg')
 		plt.show()
 		matplotlib.use("pgf")
