@@ -30,19 +30,19 @@ class Plotter(DiffEqSolver):
 		
 		# Initialise plot with right size
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,9*cm])
+		plt.figure(figsize=[16*cm,8*cm])
 		
 		for i, exponent in enumerate(exponents):
 			results[i], succ[i], xi_end[i] = self.solveLE(xi0, T0, dT0, xi_max, dxi, exponent=exponent, suppressWarning=suppressWarning)
 			# Check if the solving was successful
 			if succ[i] == True:
 				# Create plots for the difference between calculated results and exact
+				plt.subplot(3, 2, 2*i+1)
 				if i==0:
-					subpl1 = plt.subplot(3, 2, 2*i+1)
-				else:
-					subpl1 = plt.subplot(3, 2, 2*i+1, sharex=subpl1)
+					plt.xticks([])
 				if i==1:
-					# Only create Title for the subplot in the first row
+					plt.xticks([])
+					# Only create yLabel for the subplot in the 2nd row
 					plt.ylabel(r'Difference $\Delta=\theta_{\textrm{calc}}-\theta_{\textrm{exct}}$')
 				if i==2:
 					plt.xlabel(r'Radial Coordinate $\xi/\xi_0$')
