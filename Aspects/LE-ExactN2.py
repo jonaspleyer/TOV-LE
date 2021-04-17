@@ -51,11 +51,12 @@ class Plotter(DiffEqSolver):
 		
 		ax1 = plt.subplot(1,2,1)
 		# Set the plot title
-		ax1.set_title(r'Series $\theta_{ser}=\sum b_m\xi^{2m}$')
+		ax1.set_ylabel(r'LE Solution $\theta$')
+		ax1.set_xlabel(r'Radial Coordinate $\xi$')
 		# Plot the LE results from series expansion
-		ax1.plot(x_vals, y_vals, label=r'$\theta_{ser}$', c='k', linestyle=standards.linestyles[0])
+		ax1.plot(x_vals, y_vals, label=r'$\theta_{\mathrm{ser}}$', c='k', linestyle=standards.linestyles[0])
 		# Plot the solution of the differential equation as well
-		ax1.plot(results[:,0], results[:,1], label=r'$\theta_{calc}$', c='k', linestyle=standards.linestyles[1])
+		ax1.plot(results[:,0], results[:,1], label=r'$\theta_{\mathrm{num}}$', c='k', linestyle=standards.linestyles[1])
 		
 		# Set the ticks to show a tick where the last radius value was calculated
 		ticks = np.arange(0,conv_radius[-1],1)
@@ -69,7 +70,8 @@ class Plotter(DiffEqSolver):
 		
 		# Plot the radius of convergence
 		ax2 = plt.subplot(1,2,2)
-		ax2.set_title("Radius of convergence $R_m$")
+		ax2.set_ylabel(r'Radius of Convergence $R_m$')
+		ax2.set_xlabel(r'Index $m$')
 		ax2.plot(range(1,len(b)), conv_radius, c='k', label='$R_m$')
 		ax2.legend()
 		
