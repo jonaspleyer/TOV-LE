@@ -2,10 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import interp1d
-from scipy.misc import derivative
-import scipy.integrate as integrate
 
 # Ignore MatplotlibDeprecationWarning
 import warnings
