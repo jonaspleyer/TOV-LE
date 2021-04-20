@@ -25,7 +25,7 @@ class Plotter(DiffEqSolver):
 		# We can check the value at a very small value. If this value is not larger than 
 		
 		a_max = 1
-		while p_alpha(a_max) > 0.01*p0:
+		while p_alpha(a_max) > 0.001*p0:
 			a_max += 1
 		a_max += -1
 		
@@ -63,7 +63,7 @@ class Plotter(DiffEqSolver):
 			plt.plot(results_2[:, 0], results_2[:, 2], label=r'$p(r)$ rel', linestyle='--', c='black')
 			plt.legend()
 # 			plt.title("Pressure")
-			plt.ylabel(r'Pressure $p(Gc^{-4})$')
+			plt.ylabel(r'Pressure $p$')
 			plt.xlabel(r'Radius $r$')
 			
 			# Plot u(r)
@@ -72,7 +72,7 @@ class Plotter(DiffEqSolver):
 			plt.plot(results_2[:, 0], results_2[:, 1], label=r'$m(r)$ rel', linestyle='--', c='black')
 			plt.legend()
 # 			plt.title("Mass")
-			plt.ylabel(r'Mass $m(Gc^{-2})$')
+			plt.ylabel(r'Mass $m$')
 			plt.xlabel(r'Radius $r$')
 			
 			# Plot density
@@ -81,7 +81,7 @@ class Plotter(DiffEqSolver):
 			plt.plot(results_2[:,0], results_2[:,3], label=r'$\rho (r)$ rel', linestyle='--', c='black')
 			plt.legend()
 # 			plt.title("Density")
-			plt.ylabel(r'Density $\rho(Gc^{-2})$')
+			plt.ylabel(r'Density $\rho$')
 			plt.xlabel(r'Radius $r$')
 			
 			# Plot EOS
