@@ -99,7 +99,7 @@ class Plotter(DiffEqSolver):
 # Values of interest are mainly between 1.5 and 3 since those correspond to gamma = 1+1/n = 4/3, 5/3
 n = 3
 gamma = 1+1/n
-A = 4
+A = 2
 
 # Create instance of solver with exponent
 Solver = Plotter(gamma,A)
@@ -107,8 +107,8 @@ Solver = Plotter(gamma,A)
 # Set initial values
 r0 = 0
 u0 = 0
-p0 = 2
-R = 2
+p0 = 0.5
+R = 2.5
 rend = R
 dr = 0.01
 
