@@ -108,7 +108,7 @@ Solver = Plotter(gamma,A)
 r0 = 0
 u0 = 0
 p0 = 2
-R = 1
+R = 2
 rend = R
 dr = 0.01
 
