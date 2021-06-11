@@ -5,7 +5,16 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include<sys/wait.h>
+#include <chrono>  // for high_resolution_clock
+#include <signal.h> // catch Ctrl+C command
 using namespace std;
+
+void my_handler(int s){
+           printf("Caught signal %d\n",s);
+           exit(1); 
+
+}
 
 class SolverTasks {
 public:
@@ -106,13 +115,13 @@ public:
 		float r = 0;
 		float u = 0;
 		float p = p_init;
-		float dr = 0.001;
+		float dr = 0.0005;
 		float r_max=10000.0;
-		int steps = (r_max-r)/dr;
+// 		int steps = (r_max-r)/dr;
 // 			float u_series[steps+1];
 // 			float p_series[steps+1];
 		float* res;
-		static float ret[4];
+		static float ret[5];
 // 			u_series[0] = u;
 // 			p_series[0] = p;
 		for (int n = 0; r < r_max; r += dr) {
@@ -129,54 +138,41 @@ public:
 		ret[1]=u;
 		ret[2]=p;
 		ret[3] = isnan(u) + isnan(p) + r>r_max-2*dr;
+		ret[4] = dr;
 		return ret;
 	}
 	
 	void writeZeroVal(float* ret, float n, float a, float p0, std::ofstream& myfile) {
-		string output = "{'r'=" + std::to_string(ret[0]) + ",'u'=" + std::to_string(ret[1]) + ",'p'=" + std::to_string(ret[2]) + ",'n'=" + std::to_string(n) + ",'a'=" + std::to_string(a) + ",'p0'=" + std::to_string(p0) + ",'solved'=" + std::to_string(ret[3]<1) + "}\n";
+		string output = "{'r'=" + std::to_string(ret[0]) + ",'u'=" + std::to_string(ret[1]) + ",'p'=" + std::to_string(ret[2]) + ",'n'=" + std::to_string(n) + ",'a'=" + std::to_string(a) + ",'p0'=" + std::to_string(p0) + ",'dr'=" + std::to_string(ret[4]) + ",'solved'=" + std::to_string(ret[3]<1) + "}\n";
 		std::cout << output;
 		myfile << output;
 	}
 	
-	void calculateZeroVals() {
+	int calculateZeroVals() {
 		// Define initial parameters
 		float dn = 0.01;
-// 		float da = 0.2;
-// 		float dp0 = 0.2;
 		float n_min = 0.01;
 		float n_max = 5;
-// 		float a_min = 0.2;
-// 		float a_max = 20;
-// 		float p_min = 0.2;
-// 		float p_max = 20;
-		
 		float* ret;
 		
 		// Write to a file
 		std::ofstream myfile;
 		myfile.open ("results.txt");
 		
-		int threads = 4;
+		int threads = 6;
 		int processes[threads];
 		
-		vector<float> p0_vals = {0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8};
-		vector<float> a_vals = {0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8};
+		vector<float> p0_vals = {0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+		vector<float> a_vals = {0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
 		
 		SolverTasks tasks(p0_vals, a_vals, n_min, n_max, dn);
 		tasks.distribute_tasks(threads);
 		
-		int k=0;
-		int i;
+		int stat;
+		pid_t pid[threads];
 		for (int j=0; j<threads; j++) {
-			i = fork();
-			if (i) {
-				//
-			} else if (i==0) {
-				printf("Child PID=");
-				printf("%d \n",getpid());
-				cout << k << "\n";
+			if ((pid[j] = fork())==0) {
 				vector<vector<float>> subdistr = tasks.distr_threads[j];
-				cout << subdistr.size() << "\n";
 				for ( size_t h=0; h<subdistr.size(); ++h) {
 					float n = subdistr[h][0];
 					gamma = 1+1/n;
@@ -185,18 +181,40 @@ public:
 					ret = solveODE();
 					writeZeroVal(ret, n, A , p_init, myfile);
 				}
-				break;
-			} else {
-				cout << "ERROR!\n";
+				exit(j);
 			}
-			k++;
+		}
+		
+		for (int i=0; i<threads; i++) {
+			pid_t cpid = waitpid(pid[i], &stat, 0);
+			if (WIFEXITED(stat)) {
+				cout << "Subprocess "<< WEXITSTATUS(stat) << " terminated with PID=" << cpid << "\n";
+			}
 		}
 		myfile.close();
+		return 0;
 	}
 };
 
 int main() {
+	
+	struct sigaction sigIntHandler;
+
+	sigIntHandler.sa_handler = my_handler;
+	sigemptyset(&sigIntHandler.sa_mask);
+	sigIntHandler.sa_flags = 0;
+
+	sigaction(SIGINT, &sigIntHandler, NULL);
+
+	// Record start time
+	auto start = std::chrono::high_resolution_clock::now();
+	
 	// Initialise class for Differential Equation solver
 	DiffEqSolver DiffSolver;
 	DiffSolver.calculateZeroVals();
+	
+	// Record end time
+	auto finish = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed = finish - start;
+	std::cout << "Elapsed time: " << elapsed.count() << " s\n";
 }
