@@ -23,3 +23,9 @@ Aspects/TOV-Exponents-InitialVals-Database-CalculateOnly.py
 
 # Ignore exponent vals plot for rel eos 
 Aspects/TOV-Exponents-LESubs-InitialVals-RelEOS.py
+
+# Ignore some of pictures namely the ones exported in .tex or .pgf files.
+Aspects/pictures/*
+
+# Ignore c++ code if not included explicitly
+CPP-Code/*
