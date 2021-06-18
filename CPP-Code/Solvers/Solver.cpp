@@ -63,12 +63,21 @@ class DiffEqSolver {
 public:
 	// Declare initial parameters given by EOS
 	float gamma, A, p_init, dr, r_end;
+	float dn = 0.25;
+	float n_min = 0.01;
+	float n_max = 5;
+	// Define the values for which solutions should be generated
+// 	vector<float> p0_vals = {0.001,0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+// 	vector<float> a_vals = {0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+	// For testing purposes
+	vector<float> p0_vals = {0.1,1,8};
+	vector<float> a_vals = {0.1,1,8};
 	
 	// Initialise the mongodb
 	mongocxx::instance inst{};
 	mongocxx::client conn{mongocxx::uri{}};
 	mongocxx::database db = conn["TOV-LE"];
-	mongocxx::collection coll = db["Exponents-polytropic-EOS-CPP"];
+	mongocxx::collection coll = db["Exponents-polytropic-EOS-CPP2"];
 	
 	// Constructor function for the DiffEqSolver class
 	DiffEqSolver(float g = 1.3333, float a = 1, float p0 = 1, float r_step = 0.0005, float r_end_pass = 10000.0) {
@@ -83,7 +92,7 @@ public:
 	// Define EOS needed later in TOV equation
 	float eos(float p, float r) {
 		if (p > 0) {
-			return A*exp(1/gamma*log(p));
+			return A*pow(p, 1/gamma);
 		} else {
 			return 0;
 		}
@@ -253,18 +262,7 @@ public:
 	
 	// Actually calculate all the zero values we are interested in
 	int calculateZeroVals() {
-		// Define initial parameters
-		float dn = 0.1;
-		float n_min = 0.01;
-		float n_max = 5;
 		float* ret;
-		
-		// Define the values for which solutions should be generated
-// 		vector<float> p0_vals = {0.001,0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
-// 		vector<float> a_vals = {0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
-		// For testing purposes
-		vector<float> p0_vals = {0.1,1,8};
-		vector<float> a_vals = {0.1,1,8};
 		
 		// Define number of threads
 		int threads = 15;
@@ -314,6 +312,7 @@ public:
 };
 
 int main() {
+	// Interrupt Handler to stop
 	struct sigaction sigIntHandler;
 
 	sigIntHandler.sa_handler = my_handler;
@@ -327,13 +326,8 @@ int main() {
 	
 	// Initialise class for Differential Equation solver
 	DiffEqSolver DiffSolver;
-// 	cout << "\n####################################### BEFORE EXECUTION #######################################\n";
-// 	DiffSolver.printAll();
-// 	cout << "####################################### BEFORE EXECUTION #######################################\n\n";
 	DiffSolver.calculateZeroVals();
-// 	cout << "\n####################################### AFTER EXECUTION #######################################\n";
 // 	DiffSolver.printAll();
-// 	cout << "####################################### AFTER EXECUTION #######################################\n\n";
 	
 	// Record end time
 	auto finish = std::chrono::high_resolution_clock::now();
