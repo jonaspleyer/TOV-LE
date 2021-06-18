@@ -77,7 +77,7 @@ public:
 	mongocxx::instance inst{};
 	mongocxx::client conn{mongocxx::uri{}};
 	mongocxx::database db = conn["TOV-LE"];
-	mongocxx::collection coll = db["Exponents-polytropic-EOS-CPP2"];
+	mongocxx::collection coll = db["Exponents-polytropic-EOS-CPP"];
 	
 	// Constructor function for the DiffEqSolver class
 	DiffEqSolver(float g = 1.3333, float a = 1, float p0 = 1, float r_step = 0.0005, float r_end_pass = 10000.0) {
