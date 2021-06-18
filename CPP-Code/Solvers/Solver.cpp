@@ -67,11 +67,11 @@ public:
 	float n_min = 0.01;
 	float n_max = 5;
 	// Define the values for which solutions should be generated
-// 	vector<float> p0_vals = {0.001,0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
-// 	vector<float> a_vals = {0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+ 	vector<float> p0_vals = {0.001,0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
+ 	vector<float> a_vals = {0.005,0.01,0.1, 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
 	// For testing purposes
-	vector<float> p0_vals = {0.1,1,8};
-	vector<float> a_vals = {0.1,1,8};
+//	vector<float> p0_vals = {0.1,1,8};
+//	vector<float> a_vals = {0.1,1,8};
 	
 	// Initialise the mongodb
 	mongocxx::instance inst{};
