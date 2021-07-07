@@ -27,7 +27,7 @@ class Plotter(DiffEqSolver):
 		
 		# Initialise plot with right size
 		cm = 1/2.54
-		plt.figure(figsize=[8*cm,6*cm])
+		plt.figure(figsize=[14.755060*cm/2,11.066295*cm/2])
 		
 		for i, exponent in enumerate(exponents):
 			results[i], succ[i], xi_end[i] = self.solveLE(xi0, T0, dT0, xi_max, dxi, exponent=exponent, suppressWarning=suppressWarning)

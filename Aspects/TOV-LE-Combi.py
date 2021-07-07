@@ -30,7 +30,7 @@ class Plotter(DiffEqSolver):
 		# Plot the results
 		# Create a new figure with the right dimesions
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,12*cm])
+		plt.figure(figsize=[14.755060*cm,11.066295*cm])
 		
 		# Create a subplot for the different pressures and for the mass and density
 		# Subplot for pressure

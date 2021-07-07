@@ -101,7 +101,7 @@ class Plotter():
 		
 		# Initialise plot with right size
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,18*cm])
+		plt.figure(figsize=[14.7550603*cm,16.599375*cm])
 		
 		gs = matplotlib.gridspec.GridSpec(2, 1, height_ratios=[1, 1]) 
 		ax1 = plt.subplot(gs[0])

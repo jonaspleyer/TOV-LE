@@ -35,7 +35,7 @@ class Plotter(DiffEqSolver):
 		
 		# Initialise plot with right size
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,12*cm])
+		plt.figure(figsize=[14.755060*cm,11.066295*cm])
 		
 		for i in range(4):
 			if succ[i] == True:

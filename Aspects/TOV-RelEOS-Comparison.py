@@ -53,7 +53,7 @@ class Plotter(DiffEqSolver):
 		# Plot the results
 		# Create a new figure with the right dimesions
 		cm = 1/2.54
-		plt.figure(figsize=[16*cm,12*cm])
+		plt.figure(figsize=[14.755060*cm,11.066295*cm])
 		
 		# Check if the solving was successful
 		if succ_1 == True and succ_2 == True:
