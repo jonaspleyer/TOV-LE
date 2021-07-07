@@ -32,6 +32,14 @@ class Plotter(DiffEqSolver):
 		cm = 1/2.54
 		plt.figure(figsize=[14.755060*cm,11.066295*cm])
 		
+		matplotlib.use("pgf")
+		matplotlib.rcParams.update({
+# 		    "pgf.texsystem": "pdflatex",
+		    'font.family': 'serif',
+		    'text.usetex': True,
+		    'pgf.rcfonts': False,
+		})
+		
 		for i, exponent in enumerate(exponents):
 			results[i], succ[i], xi_end[i] = self.solveLE(xi0, T0, dT0, xi_max, dxi, exponent=exponent, suppressWarning=suppressWarning)
 			# Check if the solving was successful
@@ -84,13 +92,6 @@ class Plotter(DiffEqSolver):
 		plt.subplots_adjust(hspace=.0)
 		plt.savefig('pictures/LE-ValidateSols-2.svg')
 		plt.show()
-		matplotlib.use("pgf")
-		matplotlib.rcParams.update({
-# 		    "pgf.texsystem": "pdflatex",
-		    'font.family': 'serif',
-		    'text.usetex': True,
-		    'pgf.rcfonts': False,
-		})
 		plt.savefig("pictures/LE-ValidateSols-2.pgf", dpi=1000, bbox_inches='tight')
 
 
